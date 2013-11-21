@@ -41,3 +41,5 @@
 
 # other
 *.iws
+/.idea
+/*.iml
