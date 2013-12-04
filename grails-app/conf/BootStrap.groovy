@@ -9,9 +9,9 @@ class BootStrap {
         def adminRole = SecRole.findByAuthority('ROLE_ADMIN')?:new SecRole(authority: 'ROLE_ADMIN').save()
 
         def users = SecUser.list()
-        if(!users.size() == 0){
-            def standardUser = new SecUser(username: "stdUser", password: "stdPassword", email: "kevinanatole@yopmail.com").save()
-            def adminUser = new SecUser(username: "admin", password: "adminPassword", email: "kevinanatole@yahoo.fr").save()
+        if(users.size() == 0){
+            def standardUser = new SecUser(username: "stdUser", password: "stdPassword", email: "kevinanatole@yopmail.com").save(failOnError: true)
+            def adminUser = new SecUser(username: "admin", password: "adminPassword", email: "kevinanatole@yahoo.fr").save(failOnError: true)
         }
     }
     def destroy = {
