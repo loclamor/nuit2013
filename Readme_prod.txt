@@ -1,0 +1,1 @@
+Cette branche correspond aux différentes releases stables.
