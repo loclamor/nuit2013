@@ -7,11 +7,12 @@ class User {
     String username
     String password
     String emailAddress
-
     String zipCode
     String country
     Date birthDate
     Sexe sexe
+	
+	Product Selected;
 
     boolean enabled = true
     boolean accountExpired
