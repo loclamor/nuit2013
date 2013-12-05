@@ -45,31 +45,37 @@ class ExchangeController {
 	
 	
 	def reponse(){
-		def selectedProduct = params?.productId ? Product.get(params?.productId) : null
-		def ownedProduct = User.getOwned()
-		def otherUser
-		
-		if(User == A) {
-			otherUser = B
+		// Récuperation de l'utilisateur
+		boolean isUserOne = false
+		User otherUser
+		Exchange exchange
+		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		// Récuperation de l'échange
+		exchange = Exchange.findByFirstUserAndEnded(answeringUser, false)
+		if(!exchange) {
+			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
+			// TODO ERROR
+			if(!exchange) {
+				return false
+			}
+			else {
+				otherUser = exchange.getFirstUser()
+				isUserOne = false
+			}
 		}
 		else {
-			otherUser = A
+			otherUser = exchange.getSecondUser()
+			isUserOne = true
 		}
 		
-		if() {
-		
-		}
-		
-		def otherOwnedProduct = otherUser.getOwned()
-		
-		
-		if(selectedProduct == ownedProduct) {
-			otherUser.setOwned(selectedProduct)
+		boolean reponse = params?.reponse
+		if(isUserOne) {
+			exchange.setFirstUserResponse(reponse)
 		}
 		else {
-			otherUser.setOwned(ownedProduct)
-			User.setOwned(otherOwnedProduct)
+			exchange.setSecondUserResponse(reponse)
 		}
+		
 	}
 	
 }
