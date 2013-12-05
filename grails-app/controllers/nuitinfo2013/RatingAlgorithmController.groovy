@@ -4,6 +4,7 @@ class RatingAlgorithmController {
 
     def index() { }
 	
+	
 	def update(Exchange e) {
 		User u1 = e.p1.u;
 		User u2 = e.p2.u;

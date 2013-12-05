@@ -5,7 +5,8 @@ class Exchange {
 	User u1;
 	User u2;
 
-    static constraints = {
+    static constraints = { 
+		
     }
 
 }

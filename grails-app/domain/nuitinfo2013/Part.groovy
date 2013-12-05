@@ -6,6 +6,7 @@ class Part {
 	Product p;
 
     static constraints = {
+		
     }
 	
 }
