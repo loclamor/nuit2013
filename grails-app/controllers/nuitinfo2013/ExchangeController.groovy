@@ -44,8 +44,32 @@ class ExchangeController {
 	}
 	
 	
-	def Reponse(){
+	def reponse(){
+		def selectedProduct = params?.productId ? Product.get(params?.productId) : null
+		def ownedProduct = User.getOwned()
+		def otherUser
 		
+		if(User == A) {
+			otherUser = B
+		}
+		else {
+			otherUser = A
+		}
+		
+		if() {
+		
+		}
+		
+		def otherOwnedProduct = otherUser.getOwned()
+		
+		
+		if(selectedProduct == ownedProduct) {
+			otherUser.setOwned(selectedProduct)
+		}
+		else {
+			otherUser.setOwned(ownedProduct)
+			User.setOwned(otherOwnedProduct)
+		}
 	}
 	
 }
