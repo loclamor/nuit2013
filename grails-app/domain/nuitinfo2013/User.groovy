@@ -12,7 +12,7 @@ class User {
     Date birthDate
     Sexe sexe
 	
-	Product Selected;
+	Product owned;
 
     boolean enabled = true
     boolean accountExpired
