@@ -22,7 +22,7 @@ class ExchangeController {
     def index() { }
 	
 	private def isBusyUser(User u){
-		for (int i=0; i< currentExchange.length ; i++ ){
+		for (int i=0; i< currentExchange.size() ; i++ ){
 			if (currentExchange[i].A == u || currentExchange[i].B == u)
 				return i;
 		}
@@ -30,21 +30,22 @@ class ExchangeController {
 	}
 	
 	def proposeExchange(){
-		User u = User.get(springSecurityService.authentication.principal.id);
-        int k = isBusyUser(u)
+		User connectedUser = User.get(springSecurityService.authentication.principal.id);
+        int k = isBusyUser(connectedUser)
 
-        if (k!=null){
+            if (k!=null){
             ExchangeStruct exc = currentExchange[i]
 			if (new Date().compareTo(exc.initial + timeout) < 0)//WARNING to test --> normally thahts OK
-                currentExchange.remove(i);
+                currentExchange.remove(k);
 		}
-        k = isBusyUser(u)
+        k = isBusyUser(connectedUser)
 		if (k==null){
             int i = Math.floor( Math.random() * connected.length);
-			User tmp = connected[i]
+			// user to select
+            User tmp = connected[i]
             connected.remove(i)
 			busy.add(tmp);
-            exc = new ExchangeStruct(A: u,B: tmp,initial: new Date())
+            exc = new ExchangeStruct(A: connectedUser,B: tmp,initial: new Date())
             currentExchange.add(exc)
 		}
 	}
