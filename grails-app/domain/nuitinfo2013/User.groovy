@@ -24,6 +24,10 @@ class User {
         username blank: false, unique: true, nullable: false, minSize: 3
         password blank: false, nullable: false, minSize: 8
         emailAddress email: true, unique: true, nullable: false
+        zipCode nullable: true, blank:true
+        country nullable: true, blank: true
+        birthDate nullable: true, blank:true
+        sexe nullable: true, blank: true
     }
 
     static mapping = {
@@ -51,6 +55,5 @@ class User {
 }
 
 enum Sexe {
-    SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
-    THURSDAY, FRIDAY, SATURDAY
+    FEMALE,MALE
 }
