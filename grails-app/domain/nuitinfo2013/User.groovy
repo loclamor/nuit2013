@@ -29,6 +29,7 @@ class User {
         country nullable: true, blank: true
         birthDate nullable: true, blank:true
         sexe nullable: true, blank: true
+        currentProduct nullable: true, blank: true
     }
 
     static mapping = {
