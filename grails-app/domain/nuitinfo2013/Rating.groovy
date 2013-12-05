@@ -1,6 +1,10 @@
 package nuitinfo2013
 
-class Product {
+class Rating {
+	
+	Product p;
+	User u;
+	int elo;
 
     static constraints = {
     }
