@@ -11,7 +11,6 @@ class RatingAlgorithmController {
 		Product p1 = e.getPart1().getProduct();
 		Product p2 = e.getPart2().getProduct();
 		
-		
 		updateRatings(u1, p1, p2);
 		updateRatings(u2, p2, p1);
 	}
