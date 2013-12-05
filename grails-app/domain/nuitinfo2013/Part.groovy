@@ -7,4 +7,15 @@ class Part {
 
     static constraints = {
     }
+	
+	public User getUser() {
+		return u;
+	}
+
+	public Product getProduct() {
+		return p;
+	}
+	
 }
+
+

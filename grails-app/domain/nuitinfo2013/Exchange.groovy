@@ -7,4 +7,12 @@ class Exchange {
 
     static constraints = {
     }
+	
+	public Part getPart1() {
+		return p1;
+	}
+	
+	public Part getPart2() {
+		return p2;
+	}
 }
