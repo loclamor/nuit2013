@@ -10,13 +10,13 @@ class ExchangeController {
 	def connected=[];
 	def busy=[];
 
-	def currentExchange=[];
+	LinkedList<Exchange> currentExchange = [];
 	
     def index() { }
 	
 	private def isBusyUser(User u){
 		for (int i=0; i< currentExchange.size() ; i++ ){
-			if (currentExchange[i].A == u || currentExchange[i].B == u)
+			if (currentExchange[i].u1 == u || currentExchange[i].u2 == u)
 				return i;
 		}
 		return null;
@@ -25,10 +25,10 @@ class ExchangeController {
 	def proposeExchange(){
 		User connectedUser = User.get(springSecurityService.authentication.principal.id);
         int k = isBusyUser(connectedUser)
-        Exchange exc = null
+        Exchange exc
         if (k!=null){
-            exc = currentExchange[i]
-			if (new Date().compareTo(exc.initial + timeout) < 0)//WARNING to test --> normally thahts OK
+            exc = currentExchange[k]
+			if (new Date().compareTo(exc.initialTime + timeout) < 0)//WARNING to test --> normally thahts OK
                 currentExchange.remove(k);
 		}
         k = isBusyUser(connectedUser)
@@ -56,9 +56,7 @@ class ExchangeController {
 			otherUser = A
 		}
 		
-		if() {
-		
-		}
+		/**/
 		
 		def otherOwnedProduct = otherUser.getOwned()
 		
