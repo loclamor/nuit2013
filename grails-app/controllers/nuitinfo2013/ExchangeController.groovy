@@ -1,12 +1,13 @@
 package nuitinfo2013
 
 import org.apache.tomcat.jni.Time
+import nuitinfo2013.User;
 
 class ExchangeStruct{
 	User A;
-	boolean AResponse;
+	Boolean AResponse=null;
 	User B
-	boolean BResponse;
+	Boolean BResponse=null;
 	Time initial;
 }
 
@@ -16,24 +17,27 @@ class ExchangeController {
 
 	static ExchangeStruct[] currentExchange;
 	
-    def index() {
-		if (user isnot in current exchange){
-			
-		}
-	}
+    def index() { }
 	
 	def proposeExchange(){
-		co -1
-		busy +1
-		creer Exchange struct +currentExchange	
+		User u = Sprin
+		if (u is in current exchange){
+			if (is timout exchange(u))
+				re
+		}
+		
+		if (user is in current exchange){
+			
+		}else{
+			co -1
+			busy +1
+			creer Exchange struct +currentExchange
+		}
+				
 	}
 	
 	
 	def Reponse(){
-		
-	}
-	
-	def (){
 		
 	}
 	
