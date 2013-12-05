@@ -1,10 +1,10 @@
 package nuitinfo2013
 
-class Product {
+class ProductType {
 
     String libelle
 
-    static belongsTo = [productType : ProductType]
+    static hasMany = [products : Product]
 
     static constraints = {
         libelle nullable: false, blank: false, unique: true
