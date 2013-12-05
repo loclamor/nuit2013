@@ -63,7 +63,9 @@ class ExchangeController {
 			otherUser = A
 		}
 		
-		if()
+		if() {
+		
+		}
 		
 		def otherOwnedProduct = otherUser.getOwned()
 		
