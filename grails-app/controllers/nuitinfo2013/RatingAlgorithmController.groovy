@@ -32,9 +32,8 @@ class RatingAlgorithmController {
 			eq('u', u)
 			eq('p', received)
 		}
-		Rating current = res.get(0);
+		Rating winner = res.get(0);
 		
-		current.elo = Math.max(old.elo, current.elo)+1;
 		float diff = Math.abs(old.elo - winner.elo);
 
 		if (winner.elo<=old.elo){
