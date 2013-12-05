@@ -1,13 +1,10 @@
 package nuitinfo2013
 
-class Product {
+class ProductType {
 
-<<<<<<< HEAD
-    static constraints = {
-=======
     String libelle
 
-    static belongsTo = [productType : ProductType]
+    static hasMany = [products : Product]
 
     static constraints = {
         libelle nullable: false, blank: false, unique: true
@@ -15,6 +12,5 @@ class Product {
 
     static mapping = {
         version (false)
->>>>>>> e9e639efc1af5c53be5f1a8ee87c286f12dec315
     }
 }
