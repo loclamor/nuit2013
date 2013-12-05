@@ -1,39 +1,53 @@
 package nuitinfo2013
 
-import org.apache.tomcat.jni.Time
+import grails.plugin.springsecurity.SpringSecurityService;
 import nuitinfo2013.User;
 
-class ExchangeStruct{
-	User A;
-	Boolean AResponse=null;
-	User B
-	Boolean BResponse=null;
-	Time initial;
-}
-
 class ExchangeController {
-	static User[] connected;
-	static User[] busy;
+	class ExchangeStruct{
+		User A;
+		Boolean AResponse=null;
+		User B;
+		Boolean BResponse=null;
+		Date initial;
+	}
+	def springSecurityService
+	def timeout = 60*3;
+	
+	def connected=[];
+	def busy=[];
 
-	static ExchangeStruct[] currentExchange;
+	def currentExchange=[];
 	
     def index() { }
 	
+	private def isBusyUser(User u){
+		for (int i=0; i< currentExchange.size() ; i++ ){
+			if (currentExchange[i].A == u || currentExchange[i].B == u)
+				return i;
+		}
+		return null;
+	}
+	
 	def proposeExchange(){
-		User u = Sprin
-		if (u is in current exchange){
-			if (is timout exchange(u))
-				re
+		User connectedUser = User.get(springSecurityService.authentication.principal.id);
+        int k = isBusyUser(connectedUser)
+
+            if (k!=null){
+            ExchangeStruct exc = currentExchange[i]
+			if (new Date().compareTo(exc.initial + timeout) < 0)//WARNING to test --> normally thahts OK
+                currentExchange.remove(k);
 		}
-		
-		if (user is in current exchange){
-			
-		}else{
-			co -1
-			busy +1
-			creer Exchange struct +currentExchange
+        k = isBusyUser(connectedUser)
+		if (k==null){
+            int i = Math.floor( Math.random() * connected.length);
+			// user to select
+            User tmp = connected[i]
+            connected.remove(i)
+			busy.add(tmp);
+            exc = new ExchangeStruct(A: connectedUser,B: tmp,initial: new Date())
+            currentExchange.add(exc)
 		}
-				
 	}
 	
 	
