@@ -1,6 +1,7 @@
 import nuitinfo2013.Product
 import nuitinfo2013.ProductType
 import nuitinfo2013.Rating
+import nuitinfo2013.Exchange
 import nuitinfo2013.Role
 import nuitinfo2013.User
 import nuitinfo2013.UserRole
@@ -66,8 +67,6 @@ class BootStrap {
 
         def pref1 = new Rating(user: stdUser,product: product1, elo: 15).save()
         def pref2 = new Rating(user: stdUser2,product: product2, elo: -3).save()
-
-
     }
     def destroy = {
     }
