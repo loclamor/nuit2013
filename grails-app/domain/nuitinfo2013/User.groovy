@@ -7,6 +7,12 @@ class User {
     String username
     String password
     String emailAddress
+
+    String zipCode
+    String country
+    Date birthDate
+    Sexe sexe
+
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
@@ -22,6 +28,7 @@ class User {
 
     static mapping = {
         password column: '`password`'
+        version (false)
     }
 
     Set<Role> getAuthorities() {
@@ -41,4 +48,9 @@ class User {
     protected void encodePassword() {
         password = springSecurityService.encodePassword(password)
     }
+}
+
+enum Sexe {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+    THURSDAY, FRIDAY, SATURDAY
 }
