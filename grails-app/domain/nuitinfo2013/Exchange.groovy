@@ -2,9 +2,10 @@ package nuitinfo2013
 
 class Exchange {
 	
-	Part p1;
-	Part p2;
+	User u1;
+	User u2;
 
     static constraints = {
     }
+
 }

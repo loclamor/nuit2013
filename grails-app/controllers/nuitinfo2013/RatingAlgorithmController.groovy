@@ -10,6 +10,7 @@ class RatingAlgorithmController {
 		
 		Product p1 = e.p1.p;
 		Product p2 = e.p2.p;
+
 		
 		updateRatings(u1, p1, p2);
 		updateRatings(u2, p2, p1);
