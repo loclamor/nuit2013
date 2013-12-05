@@ -6,7 +6,8 @@ class Exchange {
 	User u2;
 
     static constraints = { 
-		
+		u1 nullable: false
+        u2 nullable: false
     }
 
 }
