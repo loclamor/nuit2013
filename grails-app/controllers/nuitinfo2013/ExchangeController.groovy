@@ -10,13 +10,13 @@ class ExchangeController {
 	def connected=[];
 	def busy=[];
 
-	LinkedList<Exchange> currentExchange = [];
+	def currentExchange=[];
 	
     def index() { }
 	
 	private def isBusyUser(User u){
 		for (int i=0; i< currentExchange.size() ; i++ ){
-			if (currentExchange[i].u1 == u || currentExchange[i].u2 == u)
+			if (currentExchange[i].A == u || currentExchange[i].B == u)
 				return i;
 		}
 		return null;
@@ -25,10 +25,10 @@ class ExchangeController {
 	def proposeExchange(){
 		User connectedUser = User.get(springSecurityService.authentication.principal.id);
         int k = isBusyUser(connectedUser)
-        Exchange exc
-        if (k!=null){
-            exc = currentExchange[k]
-			if (new Date().compareTo(exc.initialTime + timeout) < 0)//WARNING to test --> normally thahts OK
+
+            if (k!=null){
+            Exchange exc = currentExchange[i]
+			if (new Date().compareTo(exc.initial + timeout) < 0)//WARNING to test --> normally thahts OK
                 currentExchange.remove(k);
 		}
         k = isBusyUser(connectedUser)
@@ -45,36 +45,36 @@ class ExchangeController {
 	
 	
 	def reponse(){
-		def selectedProduct = params?.productId ? Product.get(params?.productId) : null
-		def ownedProduct = User.getOwned()
-		def otherUser
-		
-		if(User == A) {
-			otherUser = B
+		// Récuperation de l'utilisateur
+		boolean isUserOne = false
+		User otherUser
+		Exchange exchange
+		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		// Récuperation de l'échange
+		exchange = Exchange.findByFirstUserAndEnded(answeringUser, false)
+		if(!exchange) {
+			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
+			// TODO ERROR
+			if(!exchange) {
+				return false
+			}
+			else {
+				otherUser = exchange.getFirstUser()
+				isUserOne = false
+			}
 		}
 		else {
-			otherUser = A
+			otherUser = exchange.getSecondUser()
+			isUserOne = true
 		}
 		
-		/**/
-		
-		def otherOwnedProduct = otherUser.getOwned()
-		
-		
-		if(selectedProduct == ownedProduct) {
-			otherUser.setOwned(selectedProduct)
+		boolean reponse = params?.reponse
+		if(isUserOne) {
+			exchange.setFirstUserResponse(reponse)
 		}
 		else {
-			otherUser.setOwned(ownedProduct)
-			User.setOwned(otherOwnedProduct)
+			exchange.setSecondUserResponse(reponse)
 		}
-	}
-	
-	def exchangeValidate() {
-		
-	}
-	
-	def exchangeDenied() {
 		
 	}
 	
