@@ -10,4 +10,11 @@ class Exchange {
         u2 nullable: false
     }
 
+	def exchangeValidate(User userA, User userB, Product productA, Product productB) {
+		
+	}
+	
+	def exchangeDenied(User userA, User userB, Product productA, Product productB) {
+		
+	}
 }
