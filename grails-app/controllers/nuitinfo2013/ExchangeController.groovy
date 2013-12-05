@@ -4,13 +4,6 @@ import grails.plugin.springsecurity.SpringSecurityService;
 import nuitinfo2013.User;
 
 class ExchangeController {
-	class ExchangeStruct{
-		User A;
-		Boolean AResponse=null;
-		User B;
-		Boolean BResponse=null;
-		Date initial;
-	}
 	def springSecurityService
 	def timeout = 60*3;
 	
@@ -34,7 +27,7 @@ class ExchangeController {
         int k = isBusyUser(connectedUser)
 
             if (k!=null){
-            ExchangeStruct exc = currentExchange[i]
+            Exchange exc = currentExchange[i]
 			if (new Date().compareTo(exc.initial + timeout) < 0)//WARNING to test --> normally thahts OK
                 currentExchange.remove(k);
 		}
@@ -45,7 +38,7 @@ class ExchangeController {
             User tmp = connected[i]
             connected.remove(i)
 			busy.add(tmp);
-            exc = new ExchangeStruct(A: connectedUser,B: tmp,initial: new Date())
+            exc = new Exchange(A: connectedUser,B: tmp,initial: new Date())
             currentExchange.add(exc)
 		}
 	}
