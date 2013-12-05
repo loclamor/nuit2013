@@ -19,8 +19,8 @@ class BootStrap {
         def stdUser
         def adminUser
         if(users.size() == 0){
-            stdUser = new User(username: 'stdUser', password: "stdPassword", emailAddress: "test@yopmail.com").save()
-            adminUser = new User(username: 'admin', password: "adminPassword", emailAddress: "kevinanatole@yahoo.fr").save()
+            stdUser = new User(username: 'user', password: "stdPassword", emailAddress: "test@yopmail.com").save()
+            adminUser = new User(username: 'admin', password: "passwordProtected", emailAddress: "kevinanatole@yahoo.fr").save()
         }else{
             adminUser = User.findByUsername("admin")
             stdUser = User.findByUsername("stdUser")
