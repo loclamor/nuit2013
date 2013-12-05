@@ -7,6 +7,22 @@ class User {
     String username
     String password
     String emailAddress
+	
+	Product selected;
+	
+	/* personnal informations for openData*/
+	String FirstName;
+	String LastName;
+	String adress;
+	
+	String zipCode;
+	String city;
+	
+	String[] hobbies;
+	String job;
+	/*end of personnal informations*/
+	
+	
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
