@@ -72,4 +72,12 @@ class ExchangeController {
 		}
 	}
 	
+	def exchangeValidate() {
+		
+	}
+	
+	def exchangeDenied() {
+		
+	}
+	
 }
