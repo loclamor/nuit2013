@@ -19,15 +19,17 @@ class RatingAlgorithmController {
 	
 	
 	def updateRatings(User u, Product given, Product received) {
-		Rating old = Rating.withCriteria {
+		def res = Rating.withCriteria {
 			eq('u', u)
 			eq('p', given)
 		}
+		Rating old = res.get(0);
 		
-		Rating current = Rating.withCriteria {
+		res = Rating.withCriteria {
 			eq('u', u)
 			eq('p', received)
 		}
+		Rating current = res.get(0);
 		
 		current.elo = Math.max(old.elo, current.elo)+1;
 	}

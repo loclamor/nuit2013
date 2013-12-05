@@ -1,3 +1,6 @@
+import nuitinfo2013.Exchange
+import nuitinfo2013.Product
+import nuitinfo2013.Rating
 import nuitinfo2013.Role
 import nuitinfo2013.User
 import nuitinfo2013.UserRole
@@ -33,7 +36,11 @@ class BootStrap {
         if(stdAuth.size() == 0){
             new UserRole(user: adminUser, role: adminRole).save()
         }
+		
+		
     }
+	
+	
     def destroy = {
     }
 }
