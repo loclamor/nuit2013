@@ -100,17 +100,17 @@ class ExchangeController {
 		
 		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
 			
-			//calcul points
+			//points
 			RatingAlgorithmController r 
 			r.update(exchange);
-			//echange fichiers
+			//exchange products
 			Product tmp
-			tmp = exchange.firstUser.currentProduct
-			exchange.firstUser.currentProduct = exchange.secondUser.currentProduct
-			exchange.secondUser.currentProduct = tmp
-			//enregistrer
-			exchange.firstUser.save()
-			exchange.secondUser.save()
+			tmp =answeringUser.currentProduct
+			answeringUser.currentProduct = otherUser.currentProduct
+			otherUser.currentProduct = tmp
+			//save
+			answeringUser.save()
+			otherUser.save()
 		}
 		
 		def reponseState = {
