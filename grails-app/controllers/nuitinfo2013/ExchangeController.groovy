@@ -63,10 +63,9 @@ class ExchangeController {
 		Exchange exchange
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		// Récuperation de l'échange
-		exchange = Exchange.findByFirstUserAndEnded(answeringUser, false)
+		exchange = Exchange.findByFirstUser(answeringUser)
 		if(!exchange) {
-			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
-			// TODO ERROR
+			exchange = Exchange.findBySecondUser(answeringUser)
 			if(!exchange) {
 				render(contentType: "text/json") { resultCode = "KO" }
 			}
@@ -114,8 +113,8 @@ class ExchangeController {
 
 		render(contentType: "text/json") { resultCode = "OK" }
 	}
-
-	def state = {
+	
+	def stateExchange = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
 		User otherUser
@@ -154,8 +153,8 @@ class ExchangeController {
 			remainingExchange = remainingExchangeTmp
 		}
 	}
-
-	def newExchange () {
+	
+	def newExchange = {
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
