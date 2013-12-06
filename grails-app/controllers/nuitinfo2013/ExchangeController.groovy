@@ -1,5 +1,6 @@
 package nuitinfo2013
 
+import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService;
 import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
 import nuitinfo2013.User;
@@ -108,6 +109,46 @@ class ExchangeController {
 			
 			
 		}
+	}
+	
+	def state() {
+		// Récuperation de l'utilisateur
+		boolean isUserOne = false
+		User otherUser
+		Exchange exchange
+		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		// Wait end timer
+		
+		// Récuperation de l'échange
+		def stateExchange = {
+			String status
+			int remainingExchange
+			String state
+		}
+		exchange = Exchange.findByFirstUser(answeringUser)
+		if(!exchange) {
+			exchange = Exchange.findBySecondUser(answeringUser)
+			if(!exchange) {
+				stateExchange.state = "KO"
+				return stateExchange as JSON
+			}
+		}
+		// Send exchange
+		
+		
+		stateExchange.state = "OK"
+		
+		if(exchange.firstUserResponse() == true && exchange.secondUserResponse() == true) {
+			stateExchange.status = "VALIDATE"
+		}
+		else {
+			stateExchange.status = "DENIED"
+		}
+		stateExchange.remainingExchange = answeringUser.exchangeRemaining
+		// TODO REMOVE
+		exchange.remove()
+		
+		return stateExchange as JSON
 	}
 	
 }
