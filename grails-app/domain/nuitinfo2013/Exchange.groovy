@@ -9,10 +9,10 @@ package nuitinfo2013
  */
 class Exchange {
 
-    User u1;
-    Boolean u1Response=null;
-    User u2;
-    Boolean u2Response=null;
+    User firstUser
+    Boolean firstUserResponse=null
+    User secondUser
+    Boolean secondUserResponse=null
     Date initialTime;
-
+		Boolean ended=false
 }
