@@ -1,6 +1,7 @@
 package nuitinfo2013
 
 import grails.plugin.springsecurity.SpringSecurityService;
+import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
 import nuitinfo2013.User;
 
 class ExchangeController {
@@ -90,6 +91,18 @@ class ExchangeController {
 			exchange.setSecondUserResponse(reponse)
 		}
 		
+		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
+			//echange fichiers
+			
+			//calcul points
+			 def RatingAlgorithmController  
+			//enregistrer
+			exchange.firstUser.save()
+			exchange.secondUser.save()
+			
+			
+			
+		}
 	}
 	
 }
