@@ -27,7 +27,6 @@ class ExchangeController {
 				current.available = false;
 				def user2 = UserManager.findByUser(match);
 				user2.available = false;
-
 				// save
 				current.save();
 				user2.save();
@@ -41,6 +40,8 @@ class ExchangeController {
 		def res = UserManager.getAll();
 		def bestMatch = null;
 		def bestElo = -100;
+		
+		Product prdt1=connectedUser.currentProduct;
 
 		res.each {
 			if (it.getAvailable()){
@@ -48,13 +49,7 @@ class ExchangeController {
 				def user = it.getUser();
 				def product  = user.currentProduct;
 				if (product.id != connectedUser.currentProduct.id){
-					def elo
-					if (Rating.findByUserAndProduct(connectedUser,product) == null){
-						new Rating(user:connectedUser,product:product).save()
-						elo=0;
-					}else {
-						elo = Rating.findByUserAndProduct(connectedUser,product).elo;
-					}
+					def elo = Rating.findByUserAndProduct(connectedUser,product).elo;
 					if (elo>bestElo) bestMatch=user;
 				}
 			}
@@ -153,7 +148,7 @@ class ExchangeController {
 		}
 		remainingExchangeTmp = answeringUser.exchangeRemaining
 		// TODO REMOVE
-		exchange.remove()
+		exchange.delete()
 
 		render(contentType: "text/json") {
 			resultCode = "OK"
@@ -166,6 +161,7 @@ class ExchangeController {
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+
 		Exchange exchange;
 
 		if (UserManager.findByUser(answeringUser).available){
