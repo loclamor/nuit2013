@@ -159,34 +159,55 @@ class ExchangeController {
 		}
 	}
 	
-	def getNewExchange () {
+	def newExchange () {
 		// Récuperation de l'utilisateur
+		boolean estFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		
 		UserManager.findByUser(answeringUser).available = true
 		
-		getExchange(answeringUser)
-		def newExchange = {
-			def myProduct = {
-				def name = answeringUser.currentProduct.name
-				def descriptif = answeringUser.currentProduct.description
-			}
-			def yourProduct = {
-				def name = answeringUser.currentProduct.name
-				def descriptif = answeringUser.currentProduct.description
+		Exchange exchange = getExchange(answeringUser)
+		
+		estFirstUser = (exchange.firstUser == answeringUser)
+		
+		if(estFirstUser) {
+			render(contentType: "text/json") {
+				myProduct = {
+					name = exchange.firstUser.currentProduct.name
+					descriptif = exchange.firstUser.currentProduct.name 
+				}
+				yourProduct = {
+					name = exchange.secondUser.currentProduct.name
+					descriptif = exchange.secondUser.currentProduct.name
+				}
 			}
 		}
-		
-		return newExchange as JSON	
+		else {
+			render(contentType: "text/json") {
+				yourProduct = {
+					name = exchange.firstUser.currentProduct.name
+					descriptif = exchange.firstUser.currentProduct.name
+				}
+				myProduct = {
+					name = exchange.secondUser.currentProduct.name
+					descriptif = exchange.secondUser.currentProduct.name
+				}
+			}
+		}
 	}
 	
 	def testJson = {
 		def statusTmp = "ACCEPTED"
 		def remainingExchangeTmp = 42
 		render(contentType: "text/json") {
-				resultCode = "OK"
-				status = statusTmp
-				remainingExchange = remainingExchangeTmp
+			myProduct = {
+				name = statusTmp
+				descriptif = statusTmp
+			}
+			yourProduct = {
+				name = remainingExchangeTmp
+				descriptif = remainingExchangeTmp
+			}
 		}
 	}
 }
