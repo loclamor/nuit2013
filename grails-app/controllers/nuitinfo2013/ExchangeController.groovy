@@ -98,10 +98,15 @@ class ExchangeController {
 		}
 		
 		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
-			//echange fichiers
 			
 			//calcul points
-			 def RatingAlgorithmController  
+			RatingAlgorithmController r 
+			r.update(exchange);
+			//echange fichiers
+			Product tmp
+			tmp = exchange.firstUser.currentProduct
+			exchange.firstUser.currentProduct = exchange.secondUser.currentProduct
+			exchange.secondUser.currentProduct = tmp
 			//enregistrer
 			exchange.firstUser.save()
 			exchange.secondUser.save()
