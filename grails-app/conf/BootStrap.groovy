@@ -1,6 +1,7 @@
-import nuitinfo2013.Preference
 import nuitinfo2013.Product
 import nuitinfo2013.ProductType
+import nuitinfo2013.Rating
+import nuitinfo2013.Exchange
 import nuitinfo2013.Role
 import nuitinfo2013.User
 import nuitinfo2013.UserRole
@@ -52,22 +53,20 @@ class BootStrap {
         def productType6 = new ProductType(libelle: "WinterClothes").save()
         def productType7 = new ProductType(libelle: "SummerClothes").save()
 
-        def product1 = new Product(libelle: "Asus e-300",productType: productType1).save()
-        def product2 = new Product(libelle: "Emachines b500",productType: productType1).save()
-        def product3 = new Product(libelle: "HP-BC9856 + 22 inch screen",productType: productType2).save()
-        def product4 = new Product(libelle: "Dell 600",productType: productType2).save()
-        def product5 = new Product(libelle: "iomega 1TB",productType: productType3).save()
-        def product6 = new Product(libelle: "Lacie 3TB, 10000rpm",productType: productType3).save()
-        def product7 = new Product(libelle: "Low consumption bulb D52",productType: productType4).save()
-        def product8 = new Product(libelle: "High power bulb H89",productType: productType4).save()
-        def product9 = new Product(libelle: "Nika air jordan",productType: productType5).save()
-        def product10 = new Product(libelle: "Adidas classic",productType: productType5).save()
-        def product11 = new Product(libelle: "Reebok origin",productType: productType5).save()
+        def product1 = new Product(name: "Asus e-300",productType: productType1).save()
+        def product2 = new Product(name: "Emachines b500",productType: productType1).save()
+        def product3 = new Product(name: "HP-BC9856 + 22 inch screen",productType: productType2).save()
+        def product4 = new Product(name: "Dell 600",productType: productType2).save()
+        def product5 = new Product(name: "iomega 1TB",productType: productType3).save()
+        def product6 = new Product(name: "Lacie 3TB, 10000rpm",productType: productType3).save()
+        def product7 = new Product(name: "Low consumption bulb D52",productType: productType4).save()
+        def product8 = new Product(name: "High power bulb H89",productType: productType4).save()
+        def product9 = new Product(name: "Nika air jordan",productType: productType5).save()
+        def product10 = new Product(name: "Adidas classic",productType: productType5).save()
+        def product11 = new Product(name: "Reebok origin",productType: productType5).save()
 
-        def pref1 = new Preference(user: stdUser,product: product1, score: 15).save()
-        def pref2 = new Preference(user: stdUser2,product: product2, score: -3).save()
-
-
+        def pref1 = new Rating(user: stdUser,product: product1, elo: 15).save()
+        def pref2 = new Rating(user: stdUser2,product: product2, elo: -3).save()
     }
     def destroy = {
     }
