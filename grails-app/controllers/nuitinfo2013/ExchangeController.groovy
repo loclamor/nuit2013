@@ -161,16 +161,16 @@ class ExchangeController {
 	
 	def newExchange () {
 		// Récuperation de l'utilisateur
-		boolean estFirstUser = false
+		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		
 		UserManager.findByUser(answeringUser).available = true
 		
 		Exchange exchange = getExchange(answeringUser)
 		
-		def estFirstUser = (exchange.firstUser == answeringUser)
+		isFirstUser = (exchange.firstUser == answeringUser)
 		
-		if(estFirstUser) {
+		if(isFirstUser) {
 			render(contentType: "text/json") {
 				resultCode = "OK"
 				myProduct = {
