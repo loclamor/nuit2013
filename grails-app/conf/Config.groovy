@@ -113,7 +113,7 @@ grails.plugin.springsecurity.onAuthenticationSuccessEvent = { e, appCtx ->
         User user = User.get(e.authentication.principal.id)
         def ch = new ConnectionHistory(user: user).save()
         def connectedUser = UserManager.findByUser(user)
-        if(!connectedUser){
+        if(!connectedUser || connectedUser == null){
 			new UserManager(user:  user).save()
         }
     }
