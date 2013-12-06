@@ -33,11 +33,15 @@
 			</div>
 		</div>
 		<div id="container" class="container" >
+		<div class="row">
+			<div class="col-xs-8">
 			<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
 			<div class="classementEloInfos">Ce tableau liste les produits qui vous correspondent le plus</div>
 			<table class="table table-striped table-rank" >
 				
 			</table>
+			</div>
+			</div>
 			<!-- 
 			<div class="row">
 				<div class="col-xs-2" id="leftPanel">
