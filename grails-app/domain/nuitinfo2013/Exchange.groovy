@@ -14,5 +14,7 @@ class Exchange {
     User secondUser
     Boolean secondUserResponse=null
     Date initialTime;
+
 	Boolean ended=false
+
 }
