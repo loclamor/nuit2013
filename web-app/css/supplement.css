@@ -21,20 +21,27 @@
 }
 
 #banner #tradeGame .clickWrapper {
-	height: 100px;
+	height: 98px;
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 100px;
+    width: 98px;
 }
 
 #banner #tradeGame .clickWrapper:hover,
 #banner #tradeGame .clickWrapper.checked {
-	background-image: url(../images/check-icon.png);
+	background-image: url("../images/check-icon.png");
 }
 
 #banner #tradeGame .clickWrapper.notchecked {
-	background-image: url(../images/delete-icon.png);
+	background-image: url("../images/delete-icon.png");
+}
+
+#banner #tradeGame .clickWrapper.loading {
+	background-color: #FFF;
+	background-image: url("../images/loading.gif");
+	background-repeat: no-repeat;
+	background-position: 50%;
 }
 
 #banner #tradeGame .versus {

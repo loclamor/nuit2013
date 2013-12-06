@@ -2,7 +2,7 @@ package nuitinfo2013
 
 class Rating {
 
-	int elo = 1500;
+	float elo = 1500;
 
     static belongsTo = [user: User, product: Product]
     static constraints = {
