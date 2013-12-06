@@ -22,7 +22,7 @@
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <%--		Custom CSS--%>
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'supplement.css')}" type="text/css">
-		<script src="${resource(dir: 'js', file: 'tradeGame.js')}"></script>
+		
 		<g:layoutHead/>
 		<r:layoutResources />
 	</head>

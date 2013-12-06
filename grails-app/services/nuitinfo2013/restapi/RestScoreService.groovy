@@ -14,8 +14,8 @@ class RestScoreService {
                     productScoringList:
                     productList.collect { def product ->
                         def score = 0
-                        def preferenceList = Rating.findAllByProduct(product)
-                        preferenceList.each { score += it.elo }
+                        def ratingList = Rating.findAllByProduct(product)
+                        ratingList.each { score += it.elo }
                         return [
                                 productName: product.name,
                                 score: score
@@ -26,8 +26,8 @@ class RestScoreService {
             def score = 0
             Product product = Product.findByName(productName)
 
-            def preferenceList = Rating.findAllByProduct(product)
-            preferenceList.each { score += it.elo }
+            def ratingList = Rating.findAllByProduct(product)
+            ratingList.each { score += it.elo }
             representation = [
                     score: score
             ]

@@ -13,6 +13,28 @@ class BootStrap {
         def roles = Role.list()
         def userRole
         def adminRole
+		
+		def productType1 = ProductType.findByLibelle("Laptop")?:new ProductType(libelle: "Laptop").save()
+		def productType2 = ProductType.findByLibelle("Desktop")?:new ProductType(libelle: "Desktop").save()
+		def productType3 = ProductType.findByLibelle("HardDrive")?:new ProductType(libelle: "HardDrive").save()
+		def productType4 = ProductType.findByLibelle("Lights")?:new ProductType(libelle: "Lights").save()
+		def productType5 = ProductType.findByLibelle("Shoes")?:new ProductType(libelle: "Shoes").save()
+		def productType6 = ProductType.findByLibelle("WinterClothes")?:new ProductType(libelle: "WinterClothes").save()
+		def productType7 = ProductType.findByLibelle("SummerClothes")?:new ProductType(libelle: "SummerClothes").save()
+
+		def product1 = Product.findByName("Asus e-300")?:new Product(name: "Asus e-300",productType: productType1).save()
+		def product2 = Product.findByName("Emachines b500")?:new Product(name: "Emachines b500",productType: productType1).save()
+		def product3 = Product.findByName("HP-BC9856 + 22 inch screen")?:new Product(name: "HP-BC9856 + 22 inch screen",productType: productType2).save()
+		def product4 = Product.findByName("Dell 600")?:new Product(name: "Dell 600",productType: productType2).save()
+		def product5 = Product.findByName("iomega 1TB")?:new Product(name: "iomega 1TB",productType: productType3).save()
+		def product6 = Product.findByName("Lacie 3TB, 10000rpm")?:new Product(name: "Lacie 3TB, 10000rpm",productType: productType3).save()
+		def product7 = Product.findByName("Low consumption bulb D52")?:new Product(name: "Low consumption bulb D52",productType: productType4).save()
+		def product8 = Product.findByName("High power bulb H89")?:new Product(name: "High power bulb H89",productType: productType4).save()
+		def product9 = Product.findByName("Nika air jordan")?:new Product(name: "Nika air jordan",productType: productType5).save()
+		def product10 = Product.findByName("Adidas classic")?:new Product(name: "Adidas classic",productType: productType5).save()
+		def product11 = Product.findByName("Reebok origin")?:new Product(name: "Reebok origin",productType: productType5).save()
+
+		
         if(roles.size() == 0){
             userRole = new Role(authority: 'ROLE_USER').save()
             adminRole = new Role(authority: 'ROLE_ADMIN').save()
@@ -25,9 +47,11 @@ class BootStrap {
         def stdUser2
         def adminUser
         if(users.size() == 0){
+
             stdUser = new User(username: 'user', password: "stdPassword", emailAddress: "test@yopmail.com", birthDate: new Date(2000,9,2), sexe: Sexe.FEMALE, zipCode: "ha").save(failOnError: true)
             stdUser2 = new User(username: 'user2', password: "stdPassword2", emailAddress: "test2@yopmail.com", birthDate: new Date(2000,9,2), sexe: Sexe.FEMALE, zipCode:"ha").save(failOnError: true)
             adminUser = new User(username: 'admin', password: "passwordProtected", emailAddress: "kevinanatole@yahoo.fr", birthDate: new Date(2010,9,2), sexe: Sexe.FEMALE,zipCode:"he").save(failOnError: true)
+
         }else{
             adminUser = User.findByUsername("admin")
             stdUser = User.findByUsername("user")
@@ -45,30 +69,12 @@ class BootStrap {
         if(adminAuth.size() == 0){
             new UserRole(user: adminUser, role: adminRole).save()
         }
-
-        def productType1 = new ProductType(libelle: "Laptop").save()
-        def productType2 = new ProductType(libelle: "Desktop").save()
-        def productType3 = new ProductType(libelle: "HardDrive").save()
-        def productType4 = new ProductType(libelle: "Lights").save()
-        def productType5 = new ProductType(libelle: "Shoes").save()
-        def productType6 = new ProductType(libelle: "WinterClothes").save()
-        def productType7 = new ProductType(libelle: "SummerClothes").save()
-
-        def product1 = new Product(name: "Asus e-300",productType: productType1).save()
-        def product2 = new Product(name: "Emachines b500",productType: productType1).save()
-        def product3 = new Product(name: "HP-BC9856 + 22 inch screen",productType: productType2).save()
-        def product4 = new Product(name: "Dell 600",productType: productType2).save()
-        def product5 = new Product(name: "iomega 1TB",productType: productType3).save()
-        def product6 = new Product(name: "Lacie 3TB, 10000rpm",productType: productType3).save()
-        def product7 = new Product(name: "Low consumption bulb D52",productType: productType4).save()
-        def product8 = new Product(name: "High power bulb H89",productType: productType4).save()
-        def product9 = new Product(name: "Nika air jordan",productType: productType5).save()
-        def product10 = new Product(name: "Adidas classic",productType: productType5).save()
-        def product11 = new Product(name: "Reebok origin",productType: productType5).save()
-
-        def pref1 = new Rating(user: stdUser,product: product1, elo: 15).save()
-        def pref2 = new Rating(user: stdUser2,product: product2, elo: -3).save()
-        def pref3 = new Rating(user: stdUser2,product: product1, elo: 45).save()
+       
+        def pref1 = Rating.findByUserAndProduct(stdUser,product1)?:new Rating(user: stdUser,product: product1, elo: 15).save()
+        def pref2 = Rating.findByUserAndProduct(stdUser2,product2)?:new Rating(user: stdUser2,product: product2, elo: -3).save()
+        def pref3 = Rating.findByUserAndProduct(stdUser2,product1)?:new Rating(user: stdUser2,product: product1, elo: 45).save()
+        def pref4 = Rating.findByUserAndProduct(stdUser,product3)?:new Rating(user: stdUser,product: product3, elo: 38).save()
+        def pref5 = Rating.findByUserAndProduct(stdUser,product4)?:new Rating(user: stdUser,product: product4, elo: 9).save()
     }
     def destroy = {
     }

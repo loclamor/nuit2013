@@ -44,4 +44,5 @@
 /.idea
 *.iml
 atlassian-ide-plugin.xml
+target-eclipse/
 

@@ -4,6 +4,7 @@ class User {
 
     transient springSecurityService
 
+	private int maxLife=5;
     String username
     String password
     String emailAddress
@@ -12,12 +13,20 @@ class User {
     Date birthDate
     Sexe sexe
 
+	int exchangeRemaining
+		
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
 	Product currentProduct;
-
+	
+	def static aleat(){
+		def allp = Product.findAll();
+		int max = allp.size();
+		return allp.get((int)Math.floor(Math.random()*max-1));
+	}
+	
     static transients = ['springSecurityService']
 
     static constraints = {
@@ -29,6 +38,7 @@ class User {
         birthDate nullable: true, blank:true
         sexe nullable: true, blank: true
         currentProduct nullable: true, blank: true
+		exchangeRemaining nullable: true
     }
 
     static mapping = {
@@ -53,6 +63,10 @@ class User {
     protected void encodePassword() {
         password = springSecurityService.encodePassword(password)
     }
+	
+	def addLife(){
+		if (exchangeRemaining<maxLife) exchangeRemaining++;
+	}
 }
 
 enum Sexe {

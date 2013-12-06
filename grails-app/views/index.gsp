@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		
+		<script src="${resource(dir: 'js', file: 'tradeGame.js')}"></script>
 	</head>
 	<body>
 		<div id="banner">
@@ -29,12 +29,13 @@
 					</div>
 					<div class="col-xs-2">
 						<div id="gameCountDown"><span>1j10h29m</span><br>avant la fin du jeu</div>
-						<div id="exchangeRemainning"><span>3</span> échanges restant dans ce jeu</div>
+						<div id="exchangeRemaining"><span>3</span> échanges restant dans ce jeu</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div id="container" class="container" >
+			<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
 			<table class="table table-striped" >
 				<tr>
 					<td>Produit</td>
