@@ -1,6 +1,7 @@
 package nuitinfo2013.restapi.v1
 
 import grails.converters.JSON
+import grails.converters.XML
 import nuitinfo2013.restapi.RestProductService
 import nuitinfo2013.restapi.RestScoreService
 
@@ -10,11 +11,17 @@ class RestScoreController {
 
     RestScoreService restScoreService
 
-    def retrieve(String product_name) {
+    def retrieve(String product_name, String format) {
         Map representation = restScoreService.buildRequestRepresentation(product_name)
 
-        // TODO handle format
-
-        render(representation as JSON)
+		switch(format){
+			case "XML":
+				render(representation as XML)
+				break
+			default:
+				render(representation as JSON)
+				break
+		}
+		
     }
 }

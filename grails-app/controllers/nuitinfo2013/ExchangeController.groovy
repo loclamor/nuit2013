@@ -140,6 +140,13 @@ class ExchangeController {
 				return null;
 			}
 		}
+
+		def dateTmp = new Date();
+		def endTime = exchange.initialTime
+		endTime.setSeconds(endTime.getSeconds() + 10)
+		if(dateTmp < endTime) {
+			sleep((endTime.getTime()-dateTmp.getTime()))
+		}
 		
 		// Send exchange
 		ratingAlgorithmService.update(exchange)
