@@ -77,7 +77,8 @@ class ExchangeController {
 			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
 			// TODO ERROR
 			if(!exchange) {
-				return false
+					reponseState.state = "KO"
+					return reponseState as JSON
 			}
 			else {
 				otherUser = exchange.getFirstUser()
@@ -110,10 +111,14 @@ class ExchangeController {
 			//enregistrer
 			exchange.firstUser.save()
 			exchange.secondUser.save()
-			
-			
-			
 		}
+		
+		def reponseState = {
+			String state
+		}
+		
+		reponseState.state = "OK"
+		return reponseState as JSON
 	}
 	
 	def state() {
@@ -139,7 +144,8 @@ class ExchangeController {
 			}
 		}
 		// Send exchange
-		
+		RatingAlgorithmController rating
+		rating.update(exchange)		
 		
 		stateExchange.state = "OK"
 		
@@ -156,4 +162,45 @@ class ExchangeController {
 		return stateExchange as JSON
 	}
 	
+	def getNewExchange () {
+		// Récuperation de l'utilisateur
+		boolean isUserOne = false
+		User otherUser
+		Exchange exchange
+		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		// Récuperation de l'échange
+		exchange = Exchange.findByFirstUserAndEnded(answeringUser, false)
+		if(!exchange) {
+			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
+			// TODO ERROR
+			if(!exchange) {
+					def reponseState = {
+						def state
+					}
+					reponseState.state = "KO"
+					return reponseState as JSON
+			}
+			else {
+				otherUser = exchange.getFirstUser()
+				isUserOne = false
+			}
+		}
+		else {
+			otherUser = exchange.getSecondUser()
+			isUserOne = true
+		}
+		getExchange(answeringUser)
+		def newExchange = {
+			def myProduct = {
+				def name = answeringUser.currentProduct.name
+				def descriptif = answeringUser.currentProduct.description
+			}
+			def yourProduct = {
+				def name = answeringUser.currentProduct.name
+				def descriptif = answeringUser.currentProduct.description
+			}
+		}
+		
+		return newExchange as JSON	
+	}
 }
