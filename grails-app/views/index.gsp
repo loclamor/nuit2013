@@ -10,9 +10,6 @@
 			<div id="tradeGame" class="container">
 				<div class="row">
 					<div class="col-xs-2">
-						
-					</div>
-					<div class="col-xs-3">
 						<a href="#" class="thumbnail" id="myProduct">
 							<span>Produit courant</span>
 							<div class="clickWrapper"></div>
@@ -22,7 +19,7 @@
 						<div id="exchangeCountDown">10s</div>
 						<div class="glyphicon glyphicon-resize-horizontal"></div>
 					</div>
-					<div class="col-xs-3">
+					<div class="col-xs-2">
 						<a href="#"  class="thumbnail" id="secondProduct">
 							<span>Produit porposé</span>
 							<div class="clickWrapper"></div>
