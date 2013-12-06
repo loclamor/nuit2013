@@ -11,7 +11,7 @@ class RestScoreController {
     RestScoreService restScoreService
 
     def retrieve(String product_name) {
-        Map representation = restScoreService.temp(product_name)
+        Map representation = restScoreService.buildRequestRepresentation(product_name)
 
         // TODO handle format
 
