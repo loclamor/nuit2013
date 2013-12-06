@@ -81,7 +81,7 @@ class ExchangeController {
 			isUserOne = true
 		}
 //exchangeRemaining
-		boolean reponse = params?.reponse
+		boolean reponse = params?.reponse == "true"
 		if(isUserOne) {
 			exchange.setFirstUserResponse(reponse)
 		}
@@ -104,7 +104,7 @@ class ExchangeController {
 			answeringUser.save()
 			otherUser.save()
 		}
-
+		
 		render(contentType: "text/json") { resultCode = "OK" }
 	}
 
@@ -142,11 +142,16 @@ class ExchangeController {
 		remainingExchangeTmp = answeringUser.exchangeRemaining
 		// TODO REMOVE
 		exchange.delete()
+		def um = UserManager.findByUser(answeringUser);
+		um.available = true;
+		um.save(flush:true);
+		answeringUser.exchangeRemaining = answeringUser.exchangeRemaining-1;
+		answeringUser.save(flush:true);
 
 		render(contentType: "text/json") {
 			resultCode = "OK"
 			status = statusTmp
-			remainingExchange = remainingExchangeTmp
+			remainingExchange = answeringUser.exchangeRemaining;
 		}
 	}
 
@@ -201,11 +206,11 @@ class ExchangeController {
 		
 		render(contentType: "text/json") {
 			resultCode = "OK"
-			yourProduct = {
+			myProduct = {
 				name = exchange.firstUser.currentProduct.name
 				descriptif = exchange.firstUser.currentProduct.name
 			}
-			myProduct = {
+			yourProduct = {
 				name = exchange.secondUser.currentProduct.name
 				descriptif = exchange.secondUser.currentProduct.name
 			}
