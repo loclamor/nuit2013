@@ -156,6 +156,10 @@ class ExchangeController {
 	}
 
 	def newExchange = {
+		if (answeringUser.exchangeRemaining<=0){
+			render(contentType: "text/json") { resultCode = "KO"}
+			return null;
+		}
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
@@ -166,6 +170,7 @@ class ExchangeController {
 			exchange = getExchange(answeringUser)
 			if (exchange == null || !exchange){
 				render(contentType: "text/json") { resultCode = "KO"}
+				return null;
 			}
 		}else {
 			exchange = Exchange.findByFirstUser(answeringUser)
@@ -228,6 +233,7 @@ class ExchangeController {
 				name = remainingExchangeTmp
 				descriptif = remainingExchangeTmp
 			}
+			remainingExchange = answeringUser.exchangeRemaining;
 		}
 	}
 	
