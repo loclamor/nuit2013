@@ -79,3 +79,12 @@
 @media (max-width: 767px) {
 	
 }
+
+
+
+.classementEloInfos {
+	margin: 10px 0px;
+	background: #fafafa;
+	border-radius: 3px;
+	padding: 10px;
+}

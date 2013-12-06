@@ -24,7 +24,7 @@ class User {
 	def static aleat(){
 		def allp = Product.findAll();
 		int max = allp.size();
-		return allp.get((int)Math.floor(Math.random()*max-1));
+		return allp.get((int)Math.floor(Math.random()*max));
 	}
 	
     static transients = ['springSecurityService']

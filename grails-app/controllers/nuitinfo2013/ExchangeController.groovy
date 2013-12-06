@@ -20,7 +20,6 @@ class ExchangeController {
 		if (current.available){
 			User match = algoMatch(connectedUser);
 
-
 			if (match != null){
 				exc = new Exchange(firstUser: connectedUser,secondUser: match,initialTime: new Date()).save();
 				// update states
@@ -138,7 +137,7 @@ class ExchangeController {
 		}
 
 		// Send exchange
-		ratingAlgorithmService.update(exchange)
+    		ratingAlgorithmService.update(exchange)
 
 		if(exchange.firstUserResponse == true && exchange.secondUserResponse == true) {
 			statusTmp = "VALIDATE"
@@ -218,10 +217,8 @@ class ExchangeController {
 			}
 		}
 		return null;
-	}
 
-	def testJson = {
-		def statusTmp = "ACCEPTED"
+
 		def remainingExchangeTmp = 42
 		render(contentType: "text/json") {
 			myProduct = {
@@ -233,5 +230,28 @@ class ExchangeController {
 				descriptif = remainingExchangeTmp
 			}
 		}
+	}
+	
+	
+	def listProducts = {
+		
+		def user = User.get(springSecurityService.authentication.principal.id)
+		def rating = Rating.findAllByUser(user)
+		
+		rating.sort({ e1, e2 ->
+			e2.elo - e1.elo
+		})
+		
+		def products = []
+		rating.each{
+			products << [name: it.product.name, elo: it.elo]
+		}
+
+		def res = [
+			resultCode: 'OK',
+			products: products	
+		]	
+		
+		render res as JSON
 	}
 }
