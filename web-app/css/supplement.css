@@ -1,0 +1,90 @@
+#banner {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: 150px;
+	border-bottom: 1px solid #eee;
+}
+
+#banner #tradeGame {
+	height: 150px;
+	text-align: center;
+}
+
+#banner #tradeGame .thumbnail {
+	height: 100px;
+	width: 100px;
+	position: relative;
+	left: -50px;
+	margin-left: 50%;
+	top: 25px;
+}
+
+#banner #tradeGame .clickWrapper {
+	height: 98px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 98px;
+}
+
+#banner #tradeGame .clickWrapper:hover,
+#banner #tradeGame .clickWrapper.checked {
+	background-image: url("../images/check-icon.png");
+}
+
+#banner #tradeGame .clickWrapper.notchecked {
+	background-image: url("../images/delete-icon.png");
+}
+
+#banner #tradeGame .clickWrapper.loading {
+	background-color: #FFF;
+	background-image: url("../images/loading.gif");
+	background-repeat: no-repeat;
+	background-position: 50%;
+}
+
+#banner #tradeGame .versus {
+	font-size: 30px;
+	padding-top: 30px;
+}
+
+#banner #tradeGame .versus .glyphicon {
+	font-size: 50px;
+}
+
+#container {
+	margin-top: 150px;
+	padding-top: 20px;
+	height : 100%;
+}
+
+
+/* grand ecran */
+@media (min-width: 1200px) {
+	
+}
+
+/* ecran moyen */
+@media (min-width: 992px) and (max-width: 1199px) {
+	
+}
+
+/* ecran petit */
+@media (min-width: 768px) and (max-width: 991px) {
+	
+}
+
+/* tres petit ecran */
+@media (max-width: 767px) {
+	
+}
+
+
+
+.classementEloInfos {
+	margin: 10px 0px;
+	background: #fafafa;
+	border-radius: 3px;
+	padding: 10px;
+}
