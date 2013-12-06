@@ -23,14 +23,14 @@ class RatingAlgorithmController {
 
 	def updateRatings(User u, Product given, Product received) {
 		def res = Rating.withCriteria {
-			eq('u', u)
-			eq('p', given)
+			eq('user', u)
+			eq('product', given)
 		}
 		Rating old = res.get(0);
 		
 		res = Rating.withCriteria {
-			eq('u', u)
-			eq('p', received)
+			eq('user', u)
+			eq('product', received)
 		}
 		Rating winner = res.get(0);
 		
@@ -57,13 +57,13 @@ class RatingAlgorithmController {
 
 	def downgradeRatings(User u, Product refused, Product current) {
 		Rating looser = Rating.withCriteria {
-			eq('u', u)
-			eq('p', refused)
+			eq('user', u)
+			eq('product', refused)
 		}
 
 		Rating old = Rating.withCriteria {
-			eq('u', u)
-			eq('p', current)
+			eq('user', u)
+			eq('product', current)
 		}
 
 		float diff = Math.abs(old.elo - looser.elo);
