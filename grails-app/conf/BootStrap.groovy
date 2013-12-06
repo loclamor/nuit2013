@@ -44,29 +44,35 @@ class BootStrap {
         if(adminAuth.size() == 0){
             new UserRole(user: adminUser, role: adminRole).save()
         }
-
-        def productType1 = new ProductType(libelle: "Laptop").save()
-        def productType2 = new ProductType(libelle: "Desktop").save()
-        def productType3 = new ProductType(libelle: "HardDrive").save()
-        def productType4 = new ProductType(libelle: "Lights").save()
-        def productType5 = new ProductType(libelle: "Shoes").save()
-        def productType6 = new ProductType(libelle: "WinterClothes").save()
-        def productType7 = new ProductType(libelle: "SummerClothes").save()
-
-        def product1 = new Product(name: "Asus e-300",productType: productType1).save()
-        def product2 = new Product(name: "Emachines b500",productType: productType1).save()
-        def product3 = new Product(name: "HP-BC9856 + 22 inch screen",productType: productType2).save()
-        def product4 = new Product(name: "Dell 600",productType: productType2).save()
-        def product5 = new Product(name: "iomega 1TB",productType: productType3).save()
-        def product6 = new Product(name: "Lacie 3TB, 10000rpm",productType: productType3).save()
-        def product7 = new Product(name: "Low consumption bulb D52",productType: productType4).save()
-        def product8 = new Product(name: "High power bulb H89",productType: productType4).save()
-        def product9 = new Product(name: "Nika air jordan",productType: productType5).save()
-        def product10 = new Product(name: "Adidas classic",productType: productType5).save()
-        def product11 = new Product(name: "Reebok origin",productType: productType5).save()
-
-        def pref1 = new Rating(user: stdUser,product: product1, elo: 15).save()
-        def pref2 = new Rating(user: stdUser2,product: product2, elo: -3).save()
+        def nbTypes = ProductType.list().size()
+        def nbProducts = Product.list().size()
+        def nbPrefs = Rating.list().size()
+        if(nbTypes == 0) {
+            def productType1 = new ProductType(libelle: "Laptop").save()
+            def productType2 = new ProductType(libelle: "Desktop").save()
+            def productType3 = new ProductType(libelle: "HardDrive").save()
+            def productType4 = new ProductType(libelle: "Lights").save()
+            def productType5 = new ProductType(libelle: "Shoes").save()
+            def productType6 = new ProductType(libelle: "WinterClothes").save()
+            def productType7 = new ProductType(libelle: "SummerClothes").save()
+        }
+        if(nbProducts == 0){
+            def product1 = new Product(name: "Asus e-300",productType: productType1).save()
+            def product2 = new Product(name: "Emachines b500",productType: productType1).save()
+            def product3 = new Product(name: "HP-BC9856 + 22 inch screen",productType: productType2).save()
+            def product4 = new Product(name: "Dell 600",productType: productType2).save()
+            def product5 = new Product(name: "iomega 1TB",productType: productType3).save()
+            def product6 = new Product(name: "Lacie 3TB, 10000rpm",productType: productType3).save()
+            def product7 = new Product(name: "Low consumption bulb D52",productType: productType4).save()
+            def product8 = new Product(name: "High power bulb H89",productType: productType4).save()
+            def product9 = new Product(name: "Nika air jordan",productType: productType5).save()
+            def product10 = new Product(name: "Adidas classic",productType: productType5).save()
+            def product11 = new Product(name: "Reebok origin",productType: productType5).save()
+        }
+        if(nbPrefs == 0){
+            def pref1 = new Rating(user: stdUser,product: product1, elo: 15).save()
+            def pref2 = new Rating(user: stdUser2,product: product2, elo: -3).save()
+        }
     }
     def destroy = {
     }
