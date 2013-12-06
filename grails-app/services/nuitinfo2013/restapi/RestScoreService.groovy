@@ -5,7 +5,7 @@ import nuitinfo2013.Rating
 
 class RestScoreService {
 
-    def temp(String productName) {
+    def buildRequestRepresentation(String productName) {
         Map representation
 
         if (!productName) {
@@ -36,19 +36,4 @@ class RestScoreService {
 
         return representation
     }
-
-    /*def findScoreForProduct(String productLibelle) {
-        Integer score = 0
-
-        if (!productLibelle) {
-            throw new IllegalArgumentException()
-        }
-
-        Product product = Product.findByName(productLibelle)
-
-        def preferenceList = Rating.findAllByProduct(product)
-        preferenceList.each { score += it.elo }
-
-        return score
-    }*/
 }
