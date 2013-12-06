@@ -15,7 +15,7 @@ class RestUserController {
 	   
 	   def userProperties = restUserService.buildRequestRepresentation(operation)
 	   
-	   switch (format){
+	   switch (format?.toLowerCase()){
 		   case "XML":
 			   render(userProperties as XML) 
 			   break

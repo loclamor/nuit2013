@@ -14,8 +14,8 @@ class RestScoreController {
     def retrieve(String product_name, String format) {
         Map representation = restScoreService.buildRequestRepresentation(product_name)
 
-		switch(format){
-			case "XML":
+		switch(format?.toLowerCase()){
+			case "xml":
 				render(representation as XML)
 				break
 			default:

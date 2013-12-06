@@ -32,7 +32,7 @@ class RestUserService {
 				render.put("average", avg)
 				return render
 				
-		}else if (action == "sexe"){
+		}else if (action == "sex"){
 			Map render = new HashMap<String,?>()
 			List<User> users = User.findAll()
 			def female = 0
