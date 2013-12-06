@@ -14,32 +14,47 @@ class ExchangeController {
 	
     def index() { }
 	
-	private def isBusyUser(User u){
-		for (int i=0; i< currentExchange.size() ; i++ ){
-			if (currentExchange[i].u1 == u || currentExchange[i].u2 == u)
-				return i;
+	def getExchange(User connectedUser){
+		def exc = null;
+		def res = UserManager.withCriteria {
+			eq('user', connectedUser)
 		}
-		return null;
+		UserManager current = res.get(0);
+		
+		if (current.getAvailable()){
+			User match = algoMatch(connectedUser);
+			exc = new Exchange(A: connectedUser,B: match,initial: new Date())
+			
+			// update states
+			current.available = false;
+			def res2 = UserManager.withCriteria {
+				eq('user', match)
+			}
+			UserManager user2 = res2.get(0);
+			user2.available = false;
+			
+			// save
+			exc.save();
+			current.save();
+			user2.save();
+		}
+		return exc;
+		/* check time
+        Exchange exc
+		if (k!=null){
+			exc = currentExchange[k]
+			if (new Date().compareTo(exc.initialTime + timeout) < 0)//WARNING to test --> normally thahts OK
+				currentExchange.remove(k);
+		}*/
 	}
 	
-	def proposeExchange(){
-		User connectedUser = User.get(springSecurityService.authentication.principal.id);
-        int k = isBusyUser(connectedUser)
-        Exchange exc
-        if (k!=null){
-            exc = currentExchange[k]
-			if (new Date().compareTo(exc.initialTime + timeout) < 0)//WARNING to test --> normally thahts OK
-                currentExchange.remove(k);
-		}
-        k = isBusyUser(connectedUser)
-		if (k==null){
-            int i = Math.floor( Math.random() * connected.length);
-			// user to select
-            User tmp = connected[i]
-            connected.remove(i)
-			busy.add(tmp);
-            exc = new Exchange(A: connectedUser,B: tmp,initial: new Date())
-            currentExchange.add(exc)
+	def User algoMatch(User connectedUser){
+		def res = UserManager.getAll();
+		res.each {
+			if (it.getAvailable()){
+				exc = algoMatch(connectedUser,it.getUser());
+			}
+			
 		}
 	}
 	
