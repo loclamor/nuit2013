@@ -13,13 +13,13 @@ class User {
     Date birthDate
     Sexe sexe
 
-		int exchangeRemaining
+	int exchangeRemaining
 		
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
-		Product currentProduct;
+	Product currentProduct;
 
     static transients = ['springSecurityService']
 
@@ -58,6 +58,7 @@ class User {
     }
 	
 	def addLife(){
+		if (exchangeRemaining<maxLife) exchangeRemaining++;
 	}
 }
 
