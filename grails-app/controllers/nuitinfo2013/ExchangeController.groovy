@@ -10,7 +10,7 @@ class ExchangeController {
 
 	def currentExchange=[];
 	
-    def index() { }
+  def index() { }
 	
 	def getExchange(User connectedUser){
 		def exc = null;
@@ -168,10 +168,11 @@ class ExchangeController {
 		
 		Exchange exchange = getExchange(answeringUser)
 		
-		estFirstUser = (exchange.firstUser == answeringUser)
+		def estFirstUser = (exchange.firstUser == answeringUser)
 		
 		if(estFirstUser) {
 			render(contentType: "text/json") {
+				resultCode = "OK"
 				myProduct = {
 					name = exchange.firstUser.currentProduct.name
 					descriptif = exchange.firstUser.currentProduct.name 
@@ -184,6 +185,7 @@ class ExchangeController {
 		}
 		else {
 			render(contentType: "text/json") {
+				resultCode = "OK"
 				yourProduct = {
 					name = exchange.firstUser.currentProduct.name
 					descriptif = exchange.firstUser.currentProduct.name
