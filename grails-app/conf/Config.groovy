@@ -1,3 +1,6 @@
+import nuitinfo2013.ConnectionHistory
+import nuitinfo2013.User
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -102,6 +105,17 @@ grails.plugin.springsecurity.authority.className = 'nuitinfo2013.Role'
 grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/'
 grails.plugin.springsecurity.rejectIfNoRule = false
 grails.plugin.springsecurity.fii.rejectPublicInvocations = false
+grails.plugin.springsecurity.useSecurityEventListener = true
+
+grails.plugin.springsecurity.onAuthenticationSuccessEvent = { e, appCtx ->
+    User.withTransaction {
+        User user = User.get(e.authentication.principal.id)
+        println user
+        def ch = new ConnectionHistory(user: user).save()
+    }
+}
+
+
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                              ['permitAll'],
 	'/index':                         ['permitAll'],
