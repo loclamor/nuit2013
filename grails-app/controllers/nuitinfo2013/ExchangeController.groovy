@@ -71,10 +71,11 @@ class ExchangeController {
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		// Récuperation de l'échange
 		exchange = Exchange.findByFirstUser(answeringUser)
-		if(!exchange) {
+		if(exchange == null) {
 			exchange = Exchange.findBySecondUser(answeringUser)
-			if(!exchange) {
+			if(exchange == null) {
 				render(contentType: "text/json") { resultCode = "KO" }
+				return null
 			}
 			else {
 				otherUser = exchange.getFirstUser()
