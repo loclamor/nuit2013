@@ -1,6 +1,8 @@
 package nuitinfo2013
 
+import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService;
+import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
 import nuitinfo2013.User;
 
 class ExchangeController {
@@ -16,9 +18,7 @@ class ExchangeController {
 	
 	def getExchange(User connectedUser){
 		def exc = null;
-		def res = UserManager.withCriteria {
-			eq('user', connectedUser)
-		}
+		def res = UserManager.findByUser(connectedUser);
 		UserManager current = res.get(0);
 		
 		if (current.getAvailable()){
@@ -27,9 +27,7 @@ class ExchangeController {
 			
 			// update states
 			current.available = false;
-			def res2 = UserManager.withCriteria {
-				eq('user', match)
-			}
+			def res2 = UserManager.findByUser(match);
 			UserManager user2 = res2.get(0);
 			user2.available = false;
 			
@@ -49,12 +47,21 @@ class ExchangeController {
 	}
 	
 	def User algoMatch(User connectedUser){
+		def exc;
 		def res = UserManager.getAll();
+		def bestMatch = null;
+		def bestElo = -1;
 		res.each {
 			if (it.getAvailable()){
-				exc = algoMatch(connectedUser,it.getUser());
+				def user = it.getUser();
+				def product  = user.currentProduct;
+				if (product.id != connectedUser.currentProduct.id){
+					def elo = Rating.findByUserAndProduct(connectedUser,product).elo;
+					if (elo>bestElo) bestMatch=user;
+				}
 			}
 		}
+		return bestMatch;
 	}
 	
 	
@@ -90,6 +97,63 @@ class ExchangeController {
 			exchange.setSecondUserResponse(reponse)
 		}
 		
+		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
+			
+			//calcul points
+			RatingAlgorithmController r 
+			r.update(exchange);
+			//echange fichiers
+			Product tmp
+			tmp = exchange.firstUser.currentProduct
+			exchange.firstUser.currentProduct = exchange.secondUser.currentProduct
+			exchange.secondUser.currentProduct = tmp
+			//enregistrer
+			exchange.firstUser.save()
+			exchange.secondUser.save()
+			
+			
+			
+		}
+	}
+	
+	def state() {
+		// Récuperation de l'utilisateur
+		boolean isUserOne = false
+		User otherUser
+		Exchange exchange
+		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		// Wait end timer
+		
+		// Récuperation de l'échange
+		def stateExchange = {
+			String status
+			int remainingExchange
+			String state
+		}
+		exchange = Exchange.findByFirstUser(answeringUser)
+		if(!exchange) {
+			exchange = Exchange.findBySecondUser(answeringUser)
+			if(!exchange) {
+				stateExchange.state = "KO"
+				return stateExchange as JSON
+			}
+		}
+		// Send exchange
+		
+		
+		stateExchange.state = "OK"
+		
+		if(exchange.firstUserResponse() == true && exchange.secondUserResponse() == true) {
+			stateExchange.status = "VALIDATE"
+		}
+		else {
+			stateExchange.status = "DENIED"
+		}
+		stateExchange.remainingExchange = answeringUser.exchangeRemaining
+		// TODO REMOVE
+		exchange.remove()
+		
+		return stateExchange as JSON
 	}
 	
 }
