@@ -17,20 +17,18 @@ class ExchangeController {
 	def getExchange(User connectedUser){
 		Exchange exc = null;
 		def current = UserManager.findByUser(connectedUser);
-
-		if (current.getAvailable()){
+		if (current.available){
 			User match = algoMatch(connectedUser);
-			
+
 
 			if (match != null){
-				exc = new Exchange(firstUser: connectedUser,secondUser: match,initialTime: new Date())
+				exc = new Exchange(firstUser: connectedUser,secondUser: match,initialTime: new Date()).save();
 				// update states
 				current.available = false;
 				def user2 = UserManager.findByUser(match);
 				user2.available = false;
 
 				// save
-				exc.save();
 				current.save();
 				user2.save();
 			}
@@ -42,9 +40,11 @@ class ExchangeController {
 		def exc;
 		def res = UserManager.getAll();
 		def bestMatch = null;
-		def bestElo = -1;
+		def bestElo = -100;
+
 		res.each {
 			if (it.getAvailable()){
+
 				def user = it.getUser();
 				def product  = user.currentProduct;
 				if (product.id != connectedUser.currentProduct.id){
@@ -118,7 +118,7 @@ class ExchangeController {
 
 		render(contentType: "text/json") { resultCode = "OK" }
 	}
-	
+
 	def stateExchange = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
@@ -131,7 +131,7 @@ class ExchangeController {
 		// Récuperation de l'échange
 		String statusTmp
 		int remainingExchangeTmp
-		
+
 		exchange = Exchange.findByFirstUser(answeringUser)
 		if(!exchange || exchange == null) {
 			exchange = Exchange.findBySecondUser(answeringUser)
@@ -141,13 +141,6 @@ class ExchangeController {
 			}
 		}
 
-		def dateTmp = new Date();
-		def endTime = exchange.initialTime
-		endTime.setSeconds(endTime.getSeconds() + 10)
-		if(dateTmp < endTime) {
-			sleep((endTime.getTime()-dateTmp.getTime()))
-		}
-		
 		// Send exchange
 		ratingAlgorithmService.update(exchange)
 
@@ -167,49 +160,67 @@ class ExchangeController {
 			remainingExchange = remainingExchangeTmp
 		}
 	}
-	
+
 	def newExchange = {
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		Exchange exchange;
 
-		UserManager.findByUser(answeringUser).available = true
-
-		Exchange exchange = getExchange(answeringUser)
-		if (exchange != null){
-			isFirstUser = (exchange.firstUser == answeringUser)
-
-			if(isFirstUser) {
-				render(contentType: "text/json") {
-					resultCode = "OK"
-					myProduct = {
-						name = exchange.firstUser.currentProduct.name
-						descriptif = exchange.firstUser.currentProduct.name
-					}
-					yourProduct = {
-						name = exchange.secondUser.currentProduct.name
-						descriptif = exchange.secondUser.currentProduct.name
+		if (UserManager.findByUser(answeringUser).available){
+			exchange = getExchange(answeringUser)
+			if (exchange == null || !exchange){
+				render(contentType: "text/json") { resultCode = "KO"}
+			}
+		}else {
+			exchange = Exchange.findByFirstUser(answeringUser)
+			if(!exchange || exchange == null) {
+				exchange = Exchange.findBySecondUser(answeringUser)
+				if(!exchange || exchange == null) {
+					UserManager.findByUser(answeringUser).available = true;
+					render(contentType: "text/json") { resultCode = "KO" }
+					return null;
+				}else{
+					render(contentType: "text/json") {
+						resultCode = "OK"
+						yourProduct = {
+							name = exchange.firstUser.currentProduct.name
+							descriptif = exchange.firstUser.currentProduct.name
+						}
+						myProduct = {
+							name = exchange.secondUser.currentProduct.name
+							descriptif = exchange.secondUser.currentProduct.name
+						}
 					}
 				}
 			}else {
 				render(contentType: "text/json") {
 					resultCode = "OK"
-					yourProduct = {
+					myProduct = {
 						name = exchange.firstUser.currentProduct.name
 						descriptif = exchange.firstUser.currentProduct.name
 					}
-					myProduct = {
+					yourProduct = {
 						name = exchange.secondUser.currentProduct.name
 						descriptif = exchange.secondUser.currentProduct.name
 					}
 				}
+				return null;
 			}
-		} else {
-		render(contentType: "text/json") {
-					resultCode = "KO"}
 		}
-
-
+		
+		render(contentType: "text/json") {
+			resultCode = "OK"
+			yourProduct = {
+				name = exchange.firstUser.currentProduct.name
+				descriptif = exchange.firstUser.currentProduct.name
+			}
+			myProduct = {
+				name = exchange.secondUser.currentProduct.name
+				descriptif = exchange.secondUser.currentProduct.name
+			}
+		}
+		return null;
 	}
 
 	def testJson = {
