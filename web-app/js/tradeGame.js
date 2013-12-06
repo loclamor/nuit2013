@@ -32,7 +32,7 @@ $(document).ready(function(){
 			var choice = !$(this).parent(".thumbnail").is("#myProduct")
 			
 			//send request
-			$.getJSON("./Exchange/response/?reponse="+choice, function( data ){
+			$.getJSON("./Exchange/reponse/?reponse="+choice, function( data ){
 				if( data.resultCode == "OK" ){
 					
 				}
@@ -85,11 +85,12 @@ function getNewExchange() {
 function refreshGame() {
 	//remove checked / denied
 	$("#secondProduct .clickWrapper").removeClass("loading");
+	$("#myProduct .clickWrapper").removeClass("loading");
 	$("#tradeGame .clickWrapper").removeClass("notchecked");
 	$("#tradeGame .clickWrapper").removeClass("checked");
 	// refresh products content
-	$("#myProduct").html( model.myProduct.name );
-	$("#secondProduct").html( model.yourProduct.name );
+	$("#myProduct span").html( model.myProduct.name );
+	$("#secondProduct span").html( model.yourProduct.name );
 	//refresh remaining exchange
 	$("#exchangeRemaining span").html( model.remainingExchange )
 	
@@ -110,6 +111,15 @@ function getStateExchange() {
 			else {
 				// ?
 			}
+			refreshGame();
+			canClick = false;
+			//resultCode loading
+			$("#secondProduct .clickWrapper").addClass("loading");
+			// new exchange
+			getNewExchange();
+		}
+		else {
+			console.log("error on ./Exchange/stateExchange/");
 			refreshGame();
 			canClick = false;
 			//resultCode loading

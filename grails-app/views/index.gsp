@@ -14,7 +14,7 @@
 					</div>
 					<div class="col-xs-3">
 						<a href="#" class="thumbnail" id="myProduct">
-							Produit courant
+							<span>Produit courant</span>
 							<div class="clickWrapper"></div>
 						</a>
 					</div>
@@ -24,7 +24,7 @@
 					</div>
 					<div class="col-xs-3">
 						<a href="#"  class="thumbnail" id="secondProduct">
-							Produit porposé
+							<span>Produit porposé</span>
 							<div class="clickWrapper"></div>
 						</a>
 					</div>
@@ -41,6 +41,18 @@
 			<table class="table table-striped table-rank" >
 				
 			</table>
+			<!-- 
+			<div class="row">
+				<div class="col-xs-2" id="leftPanel">
+				</div>
+				<div class="col-xs-8">
+					<div class="row" id="eloContent">
+					</div>
+				</div>
+				<div class="col-xs-2" id="rightPanel">
+					<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
+				</div>
+			</div>-->
 		</div>
 	</body>
 </html>
