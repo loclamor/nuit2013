@@ -10,18 +10,27 @@ class RatingAlgorithmController {
 
 
 	def update(Exchange e) {
-		User u1 = e.u1;
-		User u2 = e.u2;
+		User u1 = e.firstUser;
+		User u2 = e.secondUser;
 
 		Product p1 = u1.currentProduct;
 		Product p2 = u2.currentProduct;
-
-		updateRatings(u1, p1, p2);
-		updateRatings(u2, p2, p1);
+		
+		if (e.firstUserResponse == true){
+			updateRatings(u1, p1, p2);
+		}else{
+			downgradeRatings(u1,p2,p1)
+		}
+		
+		if (e.secondUserResponse == true){
+			updateRatings(u2, p2, p1);
+		}else{
+			downgradeRatings(u2,p1,p2)
+		}
 	}
 
 
-	def updateRatings(User u, Product given, Product received) {
+	private def updateRatings(User u, Product given, Product received) {
 		def res = Rating.withCriteria {
 			eq('user', u)
 			eq('product', given)
@@ -55,7 +64,7 @@ class RatingAlgorithmController {
 		}
 	}
 
-	def downgradeRatings(User u, Product refused, Product current) {
+	private def downgradeRatings(User u, Product refused, Product current) {
 		Rating looser = Rating.withCriteria {
 			eq('user', u)
 			eq('product', refused)
