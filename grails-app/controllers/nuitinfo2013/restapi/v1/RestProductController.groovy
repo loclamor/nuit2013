@@ -1,7 +1,9 @@
 package nuitinfo2013.restapi.v1
 
 import grails.converters.JSON
+import grails.converters.XML
 import nuitinfo2013.restapi.RestProductService
+import static org.springframework.http.HttpStatus.*
 
 
 class RestProductController {
@@ -10,9 +12,19 @@ class RestProductController {
 
     RestProductService restProductService
 
-    def retrieve(String scoreMoreThan, String scoreLessThan, String format) {
-        Map representation = restProductService.buildRequestRepresentation(scoreMoreThan, scoreLessThan)
+    def retrieve(String scoreMoreThanEquals, String scoreLessThanEquals, String format) {
+        Map representation = restProductService.buildRequestRepresentation(scoreMoreThanEquals, scoreLessThanEquals)
 
-        render(representation as JSON)
+        if (representation.error) {
+            render(text: representation as JSON, status: BAD_REQUEST)
+        }
+
+        switch (format) {
+            case 'xml':
+                render(representation as XML)
+                break;
+            default:
+                render(representation as JSON)
+        }
     }
 }

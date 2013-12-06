@@ -6,32 +6,47 @@ import nuitinfo2013.Rating
 
 class RestProductService {
 
-    Map buildRequestRepresentation(String scoreMoreThan,
-                                   String scoreLessThan) {
-        if (!scoreMoreThan && !scoreLessThan) {
+    Map buildRequestRepresentation(String scoreMoreThanEquals,
+                                   String scoreLessThanEquals) {
+
+        if (!scoreMoreThanEquals && !scoreLessThanEquals) {
             return buildRepresentationFromList(Product.findAll())
         }
-        if (scoreMoreThan && scoreLessThan) {
-            throw new IllegalArgumentException()
+        if (scoreMoreThanEquals && scoreLessThanEquals) {
+            if (scoreMoreThanEquals > scoreLessThanEquals) {
+                return badRequest()
+            }
         }
 
         def productListTmp = Product.findAll()
-        def productListFinal = []
+        def productListSup = []
+        def productListInf = []
+        def productListFinal
 
         productListTmp.each { def product ->
             def scoreProduct = 0
             def ratingList = Rating.findAllByProduct(product)
             ratingList.each { scoreProduct += it.elo }
 
-            if (scoreMoreThan) {
-                if (scoreProduct >= (scoreMoreThan as Integer)) {
-                    productListFinal.add(product)
-                }
-            } else if (scoreLessThan) {
-                if (scoreProduct <= (scoreLessThan as Integer)) {
-                    productListFinal.add(product)
+            if (scoreMoreThanEquals) {
+                if (scoreProduct >= (scoreMoreThanEquals as Integer)) {
+                    productListSup.add(product)
                 }
             }
+            if (scoreLessThanEquals) {
+                if (scoreProduct <= (scoreLessThanEquals as Integer)) {
+                    productListInf.add(product)
+                }
+            }
+        }
+
+        if (scoreMoreThanEquals && scoreLessThanEquals) {
+            productListFinal = productListInf.intersect(productListSup)
+        } else if (scoreMoreThanEquals) {
+            productListFinal = productListSup
+        }
+        else {
+            productListFinal = productListInf
         }
 
         return buildRepresentationFromList(productListFinal)
@@ -48,6 +63,12 @@ class RestProductService {
                                     type: product.productType.libelle
                             ]
                         }
+        ]
+    }
+
+    private Map badRequest() {
+        return [
+                error: 'Incorrect URL parameters'
         ]
     }
 }
