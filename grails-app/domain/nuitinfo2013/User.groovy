@@ -13,7 +13,7 @@ class User {
     Date birthDate
     Sexe sexe
 
-	int exchangeRemaining = 3
+	int exchangeRemaining = 5
 		
     boolean enabled = true
     boolean accountExpired

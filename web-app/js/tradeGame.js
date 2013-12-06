@@ -95,8 +95,8 @@ function refreshGame() {
 	$("#exchangeRemaining span").html( model.remainingExchange )
 	
 	//reset countDown
-	$("#exchangeCountDown").html( "10s" );
-	countDown = 10;
+	$("#exchangeCountDown").html( "15s" );
+	countDown = 15;
 	canClick = true;
 	
 }
