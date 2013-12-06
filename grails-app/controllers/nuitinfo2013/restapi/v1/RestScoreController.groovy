@@ -11,10 +11,10 @@ class RestScoreController {
     RestScoreService restScoreService
 
     def retrieve(String product_name) {
-        Integer score = restScoreService.findScoreForProduct(product_name)
+        Map representation = restScoreService.temp(product_name)
 
         // TODO handle format
 
-        render([score: score] as JSON)
+        render(representation as JSON)
     }
 }
