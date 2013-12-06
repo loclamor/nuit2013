@@ -16,9 +16,7 @@ class ExchangeController {
 	
 	def getExchange(User connectedUser){
 		def exc = null;
-		def res = UserManager.withCriteria {
-			eq('user', connectedUser)
-		}
+		def res = UserManager.findByUser(connectedUser);
 		UserManager current = res.get(0);
 		
 		if (current.getAvailable()){
@@ -27,9 +25,7 @@ class ExchangeController {
 			
 			// update states
 			current.available = false;
-			def res2 = UserManager.withCriteria {
-				eq('user', match)
-			}
+			def res2 = UserManager.findByUser(match);
 			UserManager user2 = res2.get(0);
 			user2.available = false;
 			
@@ -49,12 +45,21 @@ class ExchangeController {
 	}
 	
 	def User algoMatch(User connectedUser){
+		def exc;
 		def res = UserManager.getAll();
+		def bestMatch = null;
+		def bestElo = -1;
 		res.each {
 			if (it.getAvailable()){
-				exc = algoMatch(connectedUser,it.getUser());
+				def user = it.getUser();
+				def product  = user.currentProduct;
+				if (product.id != connectedUser.currentProduct.id){
+					def elo = Rating.findByUserAndProduct(connectedUser,product).elo;
+					if (elo>bestElo) bestMatch=user;
+				}
 			}
 		}
+		return bestMatch;
 	}
 	
 	
