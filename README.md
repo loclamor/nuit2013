@@ -7,6 +7,20 @@ Repo Officiel de l'équipe [MasterOfDL](http://www.nuitdelinfo.com/nuitinfo/team
 
 L'application TradeGame est distribuée sous Licence publique générale GNU 3.0, ou GNU General Public License 3.0. 
 
+*************HOW TO USE IT*************
+
+IMPORTANT : dans le jeu, le produit a gauche est le votre et le produit de droite est celui-de la personne distante avec qui on interagit. Deux comptes utilisateurs pour pouvoir essayer le système d'échange.
+
+IMPORTANT : il faut que lors de l'initialisation de l'application, le produit donné aux deux utilisateurs soit différent, si les produits sont identiques aucun n'échange n'est proposé par notre algorithme, l'attribution du produit est aléatoire, essayer de nouveau si le cas-ci se présente.
+
+login : admin 
+pass : 123123123
+
+login : user 
+pass : 123123123
+
+Voir bootStrap pour utilisateurs additionnel ( utiliser deux navigateurs ou une instance anonyme d'un navigateur).
+
 
 *************Environnement de notre projet*************
 
