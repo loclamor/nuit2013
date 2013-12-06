@@ -139,6 +139,13 @@ class ExchangeController {
 				render(contentType: "text/json") { resultCode = "KO" }
 			}
 		}
+		def dateTmp = new Date();
+		def endTime = exchange.initialTime
+		endTime.setSeconds(endTime.getSeconds() + 10)
+		if(dateTmp < endTime) {
+			sleep((endTime.getTime()-dateTmp.getTime()))
+		}
+		
 		// Send exchange
 		RatingAlgorithmController rating
 		rating.update(exchange)
