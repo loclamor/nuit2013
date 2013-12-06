@@ -14,13 +14,7 @@ class Exchange {
     User secondUser
     Boolean secondUserResponse=null
     Date initialTime;
-    Boolean ended=false
 
-    static mapping = {
-        version(false)
-    }
+	Boolean ended=false
 
-    static constraints = {
-
-    }
 }
