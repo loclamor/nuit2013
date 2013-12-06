@@ -7,10 +7,6 @@ import nuitinfo2013.User;
 
 class ExchangeController {
 	def springSecurityService
-	def timeout = 60*3;
-	
-	def connected=[];
-	def busy=[];
 
 	def currentExchange=[];
 	
@@ -37,13 +33,6 @@ class ExchangeController {
 			user2.save();
 		}
 		return exc;
-		/* check time
-        Exchange exc
-		if (k!=null){
-			exc = currentExchange[k]
-			if (new Date().compareTo(exc.initialTime + timeout) < 0)//WARNING to test --> normally thahts OK
-				currentExchange.remove(k);
-		}*/
 	}
 	
 	def User algoMatch(User connectedUser){
@@ -129,6 +118,7 @@ class ExchangeController {
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		// Wait end timer
 		
+		
 		// Récuperation de l'échange
 		def stateExchange = {
 			String status
@@ -189,6 +179,10 @@ class ExchangeController {
 			otherUser = exchange.getSecondUser()
 			isUserOne = true
 		}
+		
+		UserManager.findByUser(otherUser).available = true
+		UserManager.findByUser(answeringUser).available = true
+		
 		getExchange(answeringUser)
 		def newExchange = {
 			def myProduct = {
