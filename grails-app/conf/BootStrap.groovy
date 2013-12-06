@@ -50,13 +50,23 @@ class BootStrap {
 
             stdUser = new User(username: 'user', password: "123123123", emailAddress: "test@yopmail.com",currentProduct: User.aleat()).save(failOnError: true)
             stdUser2 = new User(username: 'user2', password: "stdPassword2", emailAddress: "test2@yopmail.com",currentProduct: User.aleat()).save(failOnError: true)
-            adminUser = new User(username: 'admin', password: "123123123", emailAddress: "kevinanatole@yahoo.fr",currentProduct: User.aleat()).save(failOnError: true)
-          
+            adminUser = new User(username: 'admin', password: "123123123", emailAddress: "kevinanatole@yahoo.fr",currentProduct: User.aleat()).save(failOnError: true)            
+			
         }else{
             adminUser = User.findByUsername("admin")
             stdUser = User.findByUsername("user")
             stdUser2 = User.findByUsername("user2")
         }
+		new Rating(user:stdUser,product:stdUser.currentProduct).save(failOnError:true)
+		new Rating(user:stdUser,product:stdUser2.currentProduct).save(failOnError:true)
+		new Rating(user:stdUser,product:adminUser.currentProduct).save(failOnError:true)
+		new Rating(user:stdUser2,product:stdUser.currentProduct).save(failOnError:true)
+		new Rating(user:stdUser2,product:stdUser2.currentProduct).save(failOnError:true)
+		new Rating(user:stdUser2,product:adminUser.currentProduct).save(failOnError:true)
+		new Rating(user:adminUser,product:adminUser.currentProduct).save(failOnError:true)
+		new Rating(user:adminUser,product:stdUser.currentProduct).save(failOnError:true)
+		new Rating(user:adminUser,product:stdUser2.currentProduct).save(failOnError:true)
+		
         def stdAuth = stdUser.getAuthorities()
         if(stdAuth.size() == 0){
             new UserRole(user: stdUser, role: userRole).save()
@@ -70,11 +80,11 @@ class BootStrap {
             new UserRole(user: adminUser, role: adminRole).save()
         }
        
-        def pref1 = Rating.findByUserAndProduct(stdUser,product1)?:new Rating(user: stdUser,product: product1, elo: 15).save()
+        /*def pref1 = Rating.findByUserAndProduct(stdUser,product1)?:new Rating(user: stdUser,product: product1, elo: 15).save()
         def pref2 = Rating.findByUserAndProduct(stdUser2,product2)?:new Rating(user: stdUser2,product: product2, elo: -3).save()
         def pref3 = Rating.findByUserAndProduct(stdUser2,product1)?:new Rating(user: stdUser2,product: product1, elo: 45).save()
         def pref4 = Rating.findByUserAndProduct(stdUser,product3)?:new Rating(user: stdUser,product: product3, elo: 38).save()
-        def pref5 = Rating.findByUserAndProduct(stdUser,product4)?:new Rating(user: stdUser,product: product4, elo: 9).save()
+        def pref5 = Rating.findByUserAndProduct(stdUser,product4)?:new Rating(user: stdUser,product: product4, elo: 9).save()*/
     }
     def destroy = {
     }

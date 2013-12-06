@@ -20,14 +20,12 @@ class ExchangeController {
 		if (current.available){
 			User match = algoMatch(connectedUser);
 
-
 			if (match != null){
 				exc = new Exchange(firstUser: connectedUser,secondUser: match,initialTime: new Date()).save();
 				// update states
 				current.available = false;
 				def user2 = UserManager.findByUser(match);
 				user2.available = false;
-
 				// save
 				current.save();
 				user2.save();
@@ -41,6 +39,8 @@ class ExchangeController {
 		def res = UserManager.getAll();
 		def bestMatch = null;
 		def bestElo = -100;
+		
+		Product prdt1=connectedUser.currentProduct;
 
 		res.each {
 			if (it.getAvailable()){
@@ -48,13 +48,7 @@ class ExchangeController {
 				def user = it.getUser();
 				def product  = user.currentProduct;
 				if (product.id != connectedUser.currentProduct.id){
-					def elo
-					if (Rating.findByUserAndProduct(connectedUser,product) == null){
-						new Rating(user:connectedUser,product:product).save()
-						elo=0;
-					}else {
-						elo = Rating.findByUserAndProduct(connectedUser,product).elo;
-					}
+					def elo = Rating.findByUserAndProduct(connectedUser,product).elo;
 					if (elo>bestElo) bestMatch=user;
 				}
 			}
@@ -143,7 +137,7 @@ class ExchangeController {
 		}
 
 		// Send exchange
-		ratingAlgorithmService.update(exchange)
+    		ratingAlgorithmService.update(exchange)
 
 		if(exchange.firstUserResponse == true && exchange.secondUserResponse == true) {
 			statusTmp = "VALIDATE"
@@ -153,7 +147,7 @@ class ExchangeController {
 		}
 		remainingExchangeTmp = answeringUser.exchangeRemaining
 		// TODO REMOVE
-		exchange.remove()
+		exchange.delete()
 
 		render(contentType: "text/json") {
 			resultCode = "OK"
@@ -166,6 +160,7 @@ class ExchangeController {
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+
 		Exchange exchange;
 
 		if (UserManager.findByUser(answeringUser).available){
@@ -222,10 +217,8 @@ class ExchangeController {
 			}
 		}
 		return null;
-	}
 
-	def testJson = {
-		def statusTmp = "ACCEPTED"
+
 		def remainingExchangeTmp = 42
 		render(contentType: "text/json") {
 			myProduct = {
