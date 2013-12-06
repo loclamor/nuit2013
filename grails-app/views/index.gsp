@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		
+		<script src="${resource(dir: 'js', file: 'tradeGame.js')}"></script>
 	</head>
 	<body>
 		<div id="banner">
@@ -35,6 +35,7 @@
 			</div>
 		</div>
 		<div id="container" class="container" >
+			<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
 			<table class="table table-striped" >
 				<tr>
 					<td>Produit</td>
