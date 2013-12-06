@@ -8,6 +8,9 @@ class UrlMappings {
         "/api/1.0/product"(controller: 'restProduct') {
             action = [GET: "retrieve"]
         }
+		"/api/1.0/user"(controller: 'restUser'){
+			action = [GET: "retrieve"]
+		}
 
 		"/$controller/$action?/$id?"{
 			constraints {
