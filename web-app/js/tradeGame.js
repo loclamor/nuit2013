@@ -107,6 +107,7 @@ function getStateExchange() {
 			if( data.status == "validate" ) {
 				//switch products
 				model.myProduct = model.yourProduct;
+				model.remainingExchange = data.remainingExchange;
 			}
 			else {
 				// ?
