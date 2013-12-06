@@ -117,7 +117,7 @@ class ExchangeController {
 		}
 	}
 	
-	def exchangeState = {
+	def stateExchange = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
 		User otherUser
