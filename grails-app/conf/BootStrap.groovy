@@ -3,6 +3,7 @@ import nuitinfo2013.ProductType
 import nuitinfo2013.Rating
 import nuitinfo2013.Exchange
 import nuitinfo2013.Role
+import nuitinfo2013.Sexe;
 import nuitinfo2013.User
 import nuitinfo2013.UserRole
 
@@ -24,9 +25,9 @@ class BootStrap {
         def stdUser2
         def adminUser
         if(users.size() == 0){
-            stdUser = new User(username: 'user', password: "stdPassword", emailAddress: "test@yopmail.com").save(failOnError: true)
-            stdUser2 = new User(username: 'user2', password: "stdPassword2", emailAddress: "test2@yopmail.com").save(failOnError: true)
-            adminUser = new User(username: 'admin', password: "passwordProtected", emailAddress: "kevinanatole@yahoo.fr").save(failOnError: true)
+            stdUser = new User(username: 'user', password: "stdPassword", emailAddress: "test@yopmail.com", birthDate: new Date(2000,9,2), sexe: Sexe.FEMALE, zipCode: "ha").save(failOnError: true)
+            stdUser2 = new User(username: 'user2', password: "stdPassword2", emailAddress: "test2@yopmail.com", birthDate: new Date(2000,9,2), sexe: Sexe.FEMALE, zipCode:"ha").save(failOnError: true)
+            adminUser = new User(username: 'admin', password: "passwordProtected", emailAddress: "kevinanatole@yahoo.fr", birthDate: new Date(2010,9,2), sexe: Sexe.FEMALE,zipCode:"he").save(failOnError: true)
         }else{
             adminUser = User.findByUsername("admin")
             stdUser = User.findByUsername("user")
