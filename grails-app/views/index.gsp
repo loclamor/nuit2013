@@ -35,29 +35,18 @@
 			</div>
 		</div>
 		<div id="container" class="container" >
-			<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
-			<table class="table table-striped" >
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-			</table>
+			
+			<div class="row">
+				<div class="col-xs-2" id="leftPanel">
+				</div>
+				<div class="col-xs-8">
+					<div class="row" id="eloContent">
+					</div>
+				</div>
+				<div class="col-xs-2" id="rightPanel">
+					<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
