@@ -1,12 +1,12 @@
 package nuitinfo2013
 
-class Preference {
+class Rating {
 
-    Integer score = 0
+	int elo = 1500;
 
     static belongsTo = [user: User, product: Product]
     static constraints = {
-        score nullable: false, blank:false
+        elo nullable: false, blank:false
     }
 
     static mapping = {

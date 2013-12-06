@@ -7,7 +7,6 @@ class User {
     String username
     String password
     String emailAddress
-
     String zipCode
     String country
     Date birthDate
@@ -17,6 +16,7 @@ class User {
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
+	Product currentProduct;
 
     static transients = ['springSecurityService']
 
@@ -28,6 +28,7 @@ class User {
         country nullable: true, blank: true
         birthDate nullable: true, blank:true
         sexe nullable: true, blank: true
+        currentProduct nullable: true, blank: true
     }
 
     static mapping = {

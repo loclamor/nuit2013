@@ -1,16 +1,15 @@
 package nuitinfo2013
 
 class Product {
+	String name;
+	String description;
+	double price = 0.0;
 
-    String libelle
-
-    static belongsTo = [productType : ProductType]
-
+    static belongsTo = [productType: ProductType]
+	
     static constraints = {
-        libelle nullable: false, blank: false, unique: true
-    }
-
-    static mapping = {
-        version (false)
+        name nullable: false, blank: false
+        description nullable: true, blank: true
+        price nullable:false, blank: true
     }
 }
