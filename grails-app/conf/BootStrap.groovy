@@ -47,26 +47,24 @@ class BootStrap {
         def stdUser2
         def adminUser
         if(users.size() == 0){
-
             stdUser = new User(username: 'user', password: "123123123", emailAddress: "test@yopmail.com",currentProduct: User.aleat()).save(failOnError: true)
             stdUser2 = new User(username: 'user2', password: "stdPassword2", emailAddress: "test2@yopmail.com",currentProduct: User.aleat()).save(failOnError: true)
-            adminUser = new User(username: 'admin', password: "123123123", emailAddress: "kevinanatole@yahoo.fr",currentProduct: User.aleat()).save(failOnError: true)            
+            adminUser = new User(username: 'admin', password: "123123123", emailAddress: "kevinanatole@yahoo.fr",currentProduct: User.aleat()).save(failOnError: true)
+            new Rating(user:stdUser,product:stdUser.currentProduct).save(failOnError:true)
+            new Rating(user:stdUser,product:stdUser2.currentProduct).save(failOnError:true)
+            new Rating(user:stdUser,product:adminUser.currentProduct).save(failOnError:true)
+            new Rating(user:stdUser2,product:stdUser.currentProduct).save(failOnError:true)
+            new Rating(user:stdUser2,product:stdUser2.currentProduct).save(failOnError:true)
+            new Rating(user:stdUser2,product:adminUser.currentProduct).save(failOnError:true)
+            new Rating(user:adminUser,product:adminUser.currentProduct).save(failOnError:true)
+            new Rating(user:adminUser,product:stdUser.currentProduct).save(failOnError:true)
+            new Rating(user:adminUser,product:stdUser2.currentProduct).save(failOnError:true)
 			
         }else{
             adminUser = User.findByUsername("admin")
             stdUser = User.findByUsername("user")
             stdUser2 = User.findByUsername("user2")
         }
-		new Rating(user:stdUser,product:stdUser.currentProduct).save(failOnError:true)
-		new Rating(user:stdUser,product:stdUser2.currentProduct).save(failOnError:true)
-		new Rating(user:stdUser,product:adminUser.currentProduct).save(failOnError:true)
-		new Rating(user:stdUser2,product:stdUser.currentProduct).save(failOnError:true)
-		new Rating(user:stdUser2,product:stdUser2.currentProduct).save(failOnError:true)
-		new Rating(user:stdUser2,product:adminUser.currentProduct).save(failOnError:true)
-		new Rating(user:adminUser,product:adminUser.currentProduct).save(failOnError:true)
-		new Rating(user:adminUser,product:stdUser.currentProduct).save(failOnError:true)
-		new Rating(user:adminUser,product:stdUser2.currentProduct).save(failOnError:true)
-		
         def stdAuth = stdUser.getAuthorities()
         if(stdAuth.size() == 0){
             new UserRole(user: stdUser, role: userRole).save()
