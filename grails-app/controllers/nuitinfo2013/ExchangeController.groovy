@@ -3,7 +3,6 @@ package nuitinfo2013
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService;
 import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
-import nuitinfo2013.User;
 
 class ExchangeController {
 	def ratingAlgorithmService
