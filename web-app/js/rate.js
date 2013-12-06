@@ -5,7 +5,7 @@ $(document).ready(function(){
 	
 	reload();
 	
-	window.setInterval(function(){ reload(); }, 2000);
+	window.setInterval(function(){ reload(); }, 5000);
 	
 });
 
