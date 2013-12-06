@@ -38,10 +38,11 @@
 
 # "temporary" build files
 /target
-/target-eclipse
 
 # other
 *.iws
 /.idea
 *.iml
+atlassian-ide-plugin.xml
+target-eclipse/
 

@@ -29,7 +29,7 @@
 					</div>
 					<div class="col-xs-2">
 						<div id="gameCountDown"><span>1j10h29m</span><br>avant la fin du jeu</div>
-						<div id="exchangeRemainning"><span>3</span> échanges restant dans ce jeu</div>
+						<div id="exchangeRemaining"><span>3</span> échanges restant dans ce jeu</div>
 					</div>
 				</div>
 			</div>
