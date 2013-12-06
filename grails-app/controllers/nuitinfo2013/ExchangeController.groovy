@@ -117,7 +117,7 @@ class ExchangeController {
 		}
 	}
 	
-	def state = {
+	def exchangeState = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
 		User otherUser
@@ -159,7 +159,7 @@ class ExchangeController {
 		}
 	}
 	
-	def newExchange () {
+	def newExchange = {
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
