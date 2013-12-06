@@ -23,7 +23,7 @@ class ExchangeController {
 		
 		if (current.getAvailable()){
 			User match = algoMatch(connectedUser);
-			exc = new Exchange(A: connectedUser,B: match,initial: new Date())
+			exc = new Exchange(firstUser: connectedUser,secondUser: match,initial: new Date())
 			
 			// update states
 			current.available = false;

@@ -24,7 +24,7 @@
 					<div class="col-xs-3">
 						<a href="#"  class="thumbnail" id="secondProduct">
 							Produit porposé
-							<div class="clickWrapper"></div>
+							<div class="clickW0rapper"></div>
 						</a>
 					</div>
 					<div class="col-xs-2">
