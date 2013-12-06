@@ -11,7 +11,5 @@ import org.junit.*
 @TestFor(ExchangeController)
 class ExchangeControllerTests {
 
-    void testSomething() {
-       fail "Implement me"
-    }
+
 }
