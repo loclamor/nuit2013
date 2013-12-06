@@ -69,6 +69,9 @@ class BootStrap {
        
         def pref1 = Rating.findByUserAndProduct(stdUser,product1)?:new Rating(user: stdUser,product: product1, elo: 15).save()
         def pref2 = Rating.findByUserAndProduct(stdUser2,product2)?:new Rating(user: stdUser2,product: product2, elo: -3).save()
+        def pref3 = Rating.findByUserAndProduct(stdUser2,product1)?:new Rating(user: stdUser2,product: product1, elo: 45).save()
+        def pref4 = Rating.findByUserAndProduct(stdUser,product3)?:new Rating(user: stdUser,product: product3, elo: 38).save()
+        def pref5 = Rating.findByUserAndProduct(stdUser,product4)?:new Rating(user: stdUser,product: product4, elo: 9).save()
     }
     def destroy = {
     }
