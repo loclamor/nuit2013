@@ -11,9 +11,9 @@ class RestUserController {
 	
 	RestUserService restUserService
 
-   def retrieve(String act, String format) {
+   def retrieve(String operation, String format) {
 	   
-	   def userProperties = restUserService.buildRequestRepresentation(act)
+	   def userProperties = restUserService.buildRequestRepresentation(operation)
 	   
 	   switch (format){
 		   case "XML":
