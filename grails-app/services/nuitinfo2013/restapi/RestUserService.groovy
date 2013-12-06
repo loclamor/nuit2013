@@ -1,5 +1,6 @@
 package nuitinfo2013.restapi
 
+import nuitinfo2013.Sexe;
 import nuitinfo2013.User
 
 class RestUserService {
@@ -31,8 +32,21 @@ class RestUserService {
 				render.put("average", avg)
 				return render
 				
-		}else if (action == sexe){
-			// TODO
+		}else if (action == "sexe"){
+			Map render = new HashMap<String,?>()
+			List<User> users = User.findAll()
+			def female = 0
+			def male = 0
+			
+			users.each{
+				if(it.getSexe().equals(Sexe.FEMALE))
+					female++
+				else
+					male++
+			}
+			female>male?render.put("Female", female):render.put("Male", male)
+			return render
+				
 		}else{
 				ArrayList render = new ArrayList<>()
 				def temp
