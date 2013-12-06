@@ -57,7 +57,13 @@ class ExchangeController {
 				def user = it.getUser();
 				def product  = user.currentProduct;
 				if (product.id != connectedUser.currentProduct.id){
-					def elo = Rating.findByUserAndProduct(connectedUser,product).elo;
+					def elo
+					if (Rating.findByUserAndProduct(connectedUser,product) == null){
+						new Rating(user:connectedUser,product:product).save()
+						elo=0;
+					}else {
+						elo = Rating.findByUserAndProduct(connectedUser,product).elo;
+					}
 					if (elo>bestElo) bestMatch=user;
 				}
 			}
