@@ -226,4 +226,27 @@ class ExchangeController {
 			}
 		}
 	}
+	
+	
+	def listProducts = {
+		
+		def user = User.get(springSecurityService.authentication.principal.id)
+		def rating = Rating.findAllByUser(user)
+		
+		rating.sort({ e1, e2 ->
+			e2.elo - e1.elo
+		})
+		
+		def products = []
+		rating.each{
+			products << [name: it.product.name, elo: it.elo]
+		}
+
+		def res = [
+			resultCode: 'OK',
+			products: products	
+		]	
+		
+		render res as JSON
+	}
 }

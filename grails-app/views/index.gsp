@@ -3,6 +3,7 @@
 	<head>
 		<meta name="layout" content="main"/>
 		<script src="${resource(dir: 'js', file: 'tradeGame.js')}"></script>
+		<script src="${resource(dir: 'js', file: 'rate.js')}"></script>
 	</head>
 	<body>
 		<div id="banner">
@@ -36,27 +37,9 @@
 		</div>
 		<div id="container" class="container" >
 			<g:link controller="index" action="logout" class="logout btn btn-default">Déconnexion</g:link>
-			<table class="table table-striped" >
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
-				<tr>
-					<td>Produit</td>
-					<td>ELO</td>
-				</tr>
+			<div class="classementEloInfos">Ce tableau liste les produits qui vous correspondent le plus</div>
+			<table class="table table-striped table-rank" >
+				
 			</table>
 		</div>
 	</body>
