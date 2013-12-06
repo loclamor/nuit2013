@@ -3,8 +3,8 @@
  */
 
 var model = {
-	myProduct : { nom: null, desc: null, prix: null },
-	yourProduct : { nom: null, desc: null, prix: null },
+	myProduct : { name: null, description: null, price: null },
+	yourProduct : { name: null, description: null, price: null },
 	remainingExchange : null,
 	globalCountDown : null
 };
@@ -87,8 +87,8 @@ function refreshGame() {
 	$("#tradeGame .clickWrapper").removeClass("notchecked");
 	$("#tradeGame .clickWrapper").removeClass("checked");
 	// refresh products content
-	$("#myProduct").html( model.myProduct.nom );
-	$("#secondProduct").html( model.yourProduct.nom );
+	$("#myProduct").html( model.myProduct.name );
+	$("#secondProduct").html( model.yourProduct.name );
 	//refresh remaining exchange
 	$("#exchangeRemaining span").html( model.remainingExchange )
 	
