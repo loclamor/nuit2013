@@ -10,7 +10,7 @@ class ExchangeController {
 
 	def currentExchange=[];
 	
-    def index() { }
+  def index() { }
 	
 	def getExchange(User connectedUser){
 		def exc = null;
@@ -54,7 +54,7 @@ class ExchangeController {
 	}
 	
 	
-	def reponse(){
+	def reponse = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
 		User otherUser
@@ -66,8 +66,9 @@ class ExchangeController {
 			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
 			// TODO ERROR
 			if(!exchange) {
-					reponseState.state = "KO"
-					return reponseState as JSON
+				render(contentType: "text/json") {
+					resultCode = "KO"
+				}
 			}
 			else {
 				otherUser = exchange.getFirstUser()
@@ -111,15 +112,12 @@ class ExchangeController {
 			
 		}
 		
-		def reponseState = {
-			String state
+		render(contentType: "text/json") {
+				resultCode = "OK"
 		}
-		
-		reponseState.state = "OK"
-		return reponseState as JSON
 	}
 	
-	def state() {
+	def state = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
 		User otherUser
@@ -129,81 +127,89 @@ class ExchangeController {
 		
 		
 		// Récuperation de l'échange
-		def stateExchange = {
-			String status
-			int remainingExchange
-			String state
-		}
+		String statusTmp
+		int remainingExchangeTmp
 		exchange = Exchange.findByFirstUser(answeringUser)
 		if(!exchange) {
 			exchange = Exchange.findBySecondUser(answeringUser)
 			if(!exchange) {
-				stateExchange.state = "KO"
-				return stateExchange as JSON
+				render(contentType: "text/json") {
+					resultCode = "KO"
+				}
 			}
 		}
 		// Send exchange
 		RatingAlgorithmController rating
 		rating.update(exchange)		
 		
-		stateExchange.state = "OK"
-		
 		if(exchange.firstUserResponse() == true && exchange.secondUserResponse() == true) {
-			stateExchange.status = "VALIDATE"
+			statusTmp = "VALIDATE"
 		}
 		else {
-			stateExchange.status = "DENIED"
+			statusTmp = "DENIED"
 		}
-		stateExchange.remainingExchange = answeringUser.exchangeRemaining
+		remainingExchangeTmp = answeringUser.exchangeRemaining
 		// TODO REMOVE
 		exchange.remove()
 		
-		return stateExchange as JSON
+		render(contentType: "text/json") {
+				resultCode = "OK"
+				status = statusTmp
+				remainingExchange = remainingExchangeTmp
+		}
 	}
 	
-	def getNewExchange () {
+	def newExchange () {
 		// Récuperation de l'utilisateur
-		boolean isUserOne = false
-		User otherUser
-		Exchange exchange
+		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
-		// Récuperation de l'échange
-		exchange = Exchange.findByFirstUserAndEnded(answeringUser, false)
-		if(!exchange) {
-			exchange = Exchange.findBySecondUserAndEnded(answeringUser, false)
-			// TODO ERROR
-			if(!exchange) {
-					def reponseState = {
-						def state
-					}
-					reponseState.state = "KO"
-					return reponseState as JSON
-			}
-			else {
-				otherUser = exchange.getFirstUser()
-				isUserOne = false
+		
+		UserManager.findByUser(answeringUser).available = true
+		
+		Exchange exchange = getExchange(answeringUser)
+		
+		isFirstUser = (exchange.firstUser == answeringUser)
+		
+		if(isFirstUser) {
+			render(contentType: "text/json") {
+				resultCode = "OK"
+				myProduct = {
+					name = exchange.firstUser.currentProduct.name
+					descriptif = exchange.firstUser.currentProduct.name 
+				}
+				yourProduct = {
+					name = exchange.secondUser.currentProduct.name
+					descriptif = exchange.secondUser.currentProduct.name
+				}
 			}
 		}
 		else {
-			otherUser = exchange.getSecondUser()
-			isUserOne = true
-		}
-		
-		UserManager.findByUser(otherUser).available = true
-		UserManager.findByUser(answeringUser).available = true
-		
-		getExchange(answeringUser)
-		def newExchange = {
-			def myProduct = {
-				def name = answeringUser.currentProduct.name
-				def descriptif = answeringUser.currentProduct.description
-			}
-			def yourProduct = {
-				def name = answeringUser.currentProduct.name
-				def descriptif = answeringUser.currentProduct.description
+			render(contentType: "text/json") {
+				resultCode = "OK"
+				yourProduct = {
+					name = exchange.firstUser.currentProduct.name
+					descriptif = exchange.firstUser.currentProduct.name
+				}
+				myProduct = {
+					name = exchange.secondUser.currentProduct.name
+					descriptif = exchange.secondUser.currentProduct.name
+				}
 			}
 		}
-		
-		return newExchange as JSON	
+	}
+	
+	def testJson = {
+		def statusTmp = "ACCEPTED"
+		def remainingExchangeTmp = 42
+		render(contentType: "text/json") {
+			myProduct = {
+				name = statusTmp
+				descriptif = statusTmp
+			}
+			yourProduct = {
+				name = remainingExchangeTmp
+				descriptif = remainingExchangeTmp
+			}
+		}
 	}
 }
