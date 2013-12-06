@@ -6,6 +6,7 @@ import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
 import nuitinfo2013.User;
 
 class ExchangeController {
+	def ratingAlgorithmService
 	def springSecurityService
 
 	def currentExchange=[];
@@ -96,8 +97,7 @@ class ExchangeController {
 		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
 			if(exchange.firstUserResponse != true && exchange.secondUserResponse != true){
 				//points
-				RatingAlgorithmController r
-				r.update(exchange)
+				ratingAlgorithmService.update(exchange)
 				//exchange products
 				Product tmp
 				tmp =answeringUser.currentProduct
@@ -108,8 +108,7 @@ class ExchangeController {
 				otherUser.save()
 			}else{
 				//update points
-				RatingAlgorithmController r
-				r.update(exchange)
+				ratingAlgorithmService.update(exchange)
 				//keep same object
 				answeringUser.save()
 				otherUser.save()
@@ -132,18 +131,27 @@ class ExchangeController {
 		// Récuperation de l'échange
 		String statusTmp
 		int remainingExchangeTmp
+		
 		exchange = Exchange.findByFirstUser(answeringUser)
-		if(!exchange) {
+		if(!exchange || exchange == null) {
 			exchange = Exchange.findBySecondUser(answeringUser)
-			if(!exchange) {
+			if(!exchange || exchange == null) {
 				render(contentType: "text/json") { resultCode = "KO" }
+				return null;
 			}
 		}
-		// Send exchange
-		RatingAlgorithmController rating
-		rating.update(exchange)
 
-		if(exchange.firstUserResponse() == true && exchange.secondUserResponse() == true) {
+		def dateTmp = new Date();
+		def endTime = exchange.initialTime
+		endTime.setSeconds(endTime.getSeconds() + 10)
+		if(dateTmp < endTime) {
+			sleep((endTime.getTime()-dateTmp.getTime()))
+		}
+		
+		// Send exchange
+		ratingAlgorithmService.update(exchange)
+
+		if(exchange.firstUserResponse == true && exchange.secondUserResponse == true) {
 			statusTmp = "VALIDATE"
 		}
 		else {
@@ -168,7 +176,6 @@ class ExchangeController {
 		UserManager.findByUser(answeringUser).available = true
 
 		Exchange exchange = getExchange(answeringUser)
-		println exchange;
 		if (exchange != null){
 			isFirstUser = (exchange.firstUser == answeringUser)
 
