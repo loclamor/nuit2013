@@ -88,18 +88,27 @@ class ExchangeController {
 		}
 		
 		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
+			if(exchange.firstUserResponse != true && exchange.secondUserResponse != true){
+				//points
+				RatingAlgorithmController r 
+				r.update(exchange)
+				//exchange products
+				Product tmp
+				tmp =answeringUser.currentProduct
+				answeringUser.currentProduct = otherUser.currentProduct
+				otherUser.currentProduct = tmp
+				//save
+				answeringUser.save()
+				otherUser.save()
+			}else{
+				//update points
+				RatingAlgorithmController r
+				r.update(exchange)
+				//keep same object
+				answeringUser.save()
+				otherUser.save()
+			}
 			
-			//points
-			RatingAlgorithmController r 
-			r.update(exchange);
-			//exchange products
-			Product tmp
-			tmp =answeringUser.currentProduct
-			answeringUser.currentProduct = otherUser.currentProduct
-			otherUser.currentProduct = tmp
-			//save
-			answeringUser.save()
-			otherUser.save()
 		}
 		
 		def reponseState = {
