@@ -1,5 +1,6 @@
 import nuitinfo2013.ConnectionHistory
 import nuitinfo2013.User
+import nuitinfo2013.UserManager
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
@@ -112,6 +113,13 @@ grails.plugin.springsecurity.onAuthenticationSuccessEvent = { e, appCtx ->
         User user = User.get(e.authentication.principal.id)
         println user
         def ch = new ConnectionHistory(user: user).save()
+        def connectedUser = UserManager.findByUser(user)
+        if(connectedUser){
+
+        }else{
+            new UserManager(user:  user).save()
+        }
+
     }
 }
 
