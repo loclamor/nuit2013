@@ -33,7 +33,7 @@ $(document).ready(function(){
 			
 			//send request
 			$.getJSON("./Exchange/response/?reponse="+choice, function( data ){
-				if( data.state == "OK" ){
+				if( data.resultCode == "OK" ){
 					
 				}
 				else {
@@ -51,7 +51,7 @@ $(document).ready(function(){
  */
 function getNewExchange() {
 	$.getJSON("./Exchange/newExchange/", function( data ){
-		if ( data.state == "OK") {
+		if ( data.resultCode == "OK") {
 			model.myProduct = data.myProduct;
 			model.yourProduct = data.yourProduct;
 			model.remainingExchange = data.remainingExchange;
@@ -101,7 +101,7 @@ function refreshGame() {
 
 function getStateExchange() {
 	$.getJSON("./Exchange/stateExchange/", function( data ){
-		if (data.state == "OK") {
+		if (data.resultCode == "OK") {
 			if( data.status == "validate" ) {
 				//switch products
 				model.myProduct = model.yourProduct;
@@ -110,7 +110,7 @@ function getStateExchange() {
 				// ?
 			}
 			refreshGame();
-			//state loading
+			//resultCode loading
 			$("#secondProduct .clickWrapper").addClass("loading");
 			// new exchange
 			getNewExchange();
