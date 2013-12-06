@@ -11,5 +11,9 @@ import org.junit.*
 @TestFor(ExchangeController)
 class ExchangeControllerTests {
 
-
+    void testGetExchange() {
+        User.getAll()[0]
+        Exchange ret = getExchange(User.getAll()[0])
+        assert (ret!=null)
+    }
 }

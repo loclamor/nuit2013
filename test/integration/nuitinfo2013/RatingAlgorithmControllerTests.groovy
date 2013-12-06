@@ -9,7 +9,7 @@ import org.junit.*
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
 class RatingAlgorithmControllerTests extends GroovyTestCase {
-
+    def ratingAlgorithmService
     void testSomething() {
        
     }
@@ -44,10 +44,10 @@ class RatingAlgorithmControllerTests extends GroovyTestCase {
 		println ("Old ratings : non-owned products")
 		println ("Old rating User1, Product2 : " + r3.elo);
 		println ("Old rating User2, Product1 : " + r4.elo);
-		 
-		
-		RatingAlgorithmController controller = new RatingAlgorithmController();
-		controller.update(e);
+
+
+
+        ratingAlgorithmService.update(e);
 		
 		// Print new ratings
 		println ("New ratings : owned products")

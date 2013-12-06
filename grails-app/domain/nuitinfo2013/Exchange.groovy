@@ -16,5 +16,10 @@ class Exchange {
     Date initialTime;
 
 	Boolean ended=false
+	
+	static constraints= {
+		firstUserResponse nullable: true
+		secondUserResponse nullable: true
+	}
 
 }

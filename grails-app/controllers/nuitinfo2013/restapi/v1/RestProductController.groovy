@@ -19,7 +19,7 @@ class RestProductController {
             render(text: representation as JSON, status: BAD_REQUEST)
         }
 
-        switch (format) {
+        switch (format?.toLowerCase()) {
             case 'xml':
                 render(representation as XML)
                 break;

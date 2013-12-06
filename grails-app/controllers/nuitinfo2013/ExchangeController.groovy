@@ -3,7 +3,6 @@ package nuitinfo2013
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService;
 import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
-import nuitinfo2013.User;
 
 class ExchangeController {
 	def ratingAlgorithmService
@@ -17,20 +16,16 @@ class ExchangeController {
 	def getExchange(User connectedUser){
 		Exchange exc = null;
 		def current = UserManager.findByUser(connectedUser);
-
-		if (current.getAvailable()){
+		if (current.available){
 			User match = algoMatch(connectedUser);
-			
 
 			if (match != null){
-				exc = new Exchange(firstUser: connectedUser,secondUser: match,initialTime: new Date())
+				exc = new Exchange(firstUser: connectedUser,secondUser: match,initialTime: new Date()).save();
 				// update states
 				current.available = false;
 				def user2 = UserManager.findByUser(match);
 				user2.available = false;
-
 				// save
-				exc.save();
 				current.save();
 				user2.save();
 			}
@@ -42,19 +37,17 @@ class ExchangeController {
 		def exc;
 		def res = UserManager.getAll();
 		def bestMatch = null;
-		def bestElo = -1;
+		def bestElo = -100;
+		
+		Product prdt1=connectedUser.currentProduct;
+
 		res.each {
 			if (it.getAvailable()){
+
 				def user = it.getUser();
 				def product  = user.currentProduct;
 				if (product.id != connectedUser.currentProduct.id){
-					def elo
-					if (Rating.findByUserAndProduct(connectedUser,product) == null){
-						new Rating(user:connectedUser,product:product).save()
-						elo=0;
-					}else {
-						elo = Rating.findByUserAndProduct(connectedUser,product).elo;
-					}
+					def elo = Rating.findByUserAndProduct(connectedUser,product).elo;
 					if (elo>bestElo) bestMatch=user;
 				}
 			}
@@ -69,6 +62,7 @@ class ExchangeController {
 		User otherUser
 		Exchange exchange
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		
 		// Récuperation de l'échange
 		exchange = Exchange.findByFirstUser(answeringUser)
 		if(exchange == null) {
@@ -86,8 +80,8 @@ class ExchangeController {
 			otherUser = exchange.getSecondUser()
 			isUserOne = true
 		}
-
-		boolean reponse = params?.reponse
+//exchangeRemaining
+		boolean reponse = params?.reponse == "true"
 		if(isUserOne) {
 			exchange.setFirstUserResponse(reponse)
 		}
@@ -97,29 +91,23 @@ class ExchangeController {
 
 		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
 			if(exchange.firstUserResponse != true && exchange.secondUserResponse != true){
-				//points
-				ratingAlgorithmService.update(exchange)
 				//exchange products
 				Product tmp
-				tmp =answeringUser.currentProduct
+				tmp = answeringUser.currentProduct
 				answeringUser.currentProduct = otherUser.currentProduct
 				otherUser.currentProduct = tmp
-				//save
-				answeringUser.save()
-				otherUser.save()
-			}else{
-				//update points
-				ratingAlgorithmService.update(exchange)
-				//keep same object
-				answeringUser.save()
-				otherUser.save()
 			}
-
+			
+			//update points
+			ratingAlgorithmService.update(exchange)
+			//keep same object
+			answeringUser.save()
+			otherUser.save()
 		}
-
+		
 		render(contentType: "text/json") { resultCode = "OK" }
 	}
-	
+
 	def stateExchange = {
 		// Récuperation de l'utilisateur
 		boolean isUserOne = false
@@ -132,7 +120,7 @@ class ExchangeController {
 		// Récuperation de l'échange
 		String statusTmp
 		int remainingExchangeTmp
-		
+
 		exchange = Exchange.findByFirstUser(answeringUser)
 		if(!exchange || exchange == null) {
 			exchange = Exchange.findBySecondUser(answeringUser)
@@ -142,79 +130,94 @@ class ExchangeController {
 			}
 		}
 
-		def dateTmp = new Date();
-		def endTime = exchange.initialTime
-		endTime.setSeconds(endTime.getSeconds() + 10)
-		if(dateTmp < endTime) {
-			sleep((endTime.getTime()-dateTmp.getTime()))
-		}
-		
 		// Send exchange
-		ratingAlgorithmService.update(exchange)
+    		ratingAlgorithmService.update(exchange)
 
 		if(exchange.firstUserResponse == true && exchange.secondUserResponse == true) {
-			statusTmp = "VALIDATE"
+			statusTmp = "validate"
 		}
 		else {
-			statusTmp = "DENIED"
+			statusTmp = "denied"
 		}
 		remainingExchangeTmp = answeringUser.exchangeRemaining
 		// TODO REMOVE
-		exchange.remove()
+		exchange.delete()
+		def um = UserManager.findByUser(answeringUser);
+		um.available = true;
+		um.save(flush:true);
+		answeringUser.exchangeRemaining = answeringUser.exchangeRemaining-1;
+		answeringUser.save(flush:true);
 
 		render(contentType: "text/json") {
 			resultCode = "OK"
 			status = statusTmp
-			remainingExchange = remainingExchangeTmp
+			remainingExchange = answeringUser.exchangeRemaining;
 		}
 	}
-	
+
 	def newExchange = {
 		// Récuperation de l'utilisateur
 		boolean isFirstUser = false
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 
-		UserManager.findByUser(answeringUser).available = true
+		Exchange exchange;
 
-		Exchange exchange = getExchange(answeringUser)
-		if (exchange != null){
-			isFirstUser = (exchange.firstUser == answeringUser)
-
-			if(isFirstUser) {
-				render(contentType: "text/json") {
-					resultCode = "OK"
-					myProduct = {
-						name = exchange.firstUser.currentProduct.name
-						descriptif = exchange.firstUser.currentProduct.name
-					}
-					yourProduct = {
-						name = exchange.secondUser.currentProduct.name
-						descriptif = exchange.secondUser.currentProduct.name
+		if (UserManager.findByUser(answeringUser).available){
+			exchange = getExchange(answeringUser)
+			if (exchange == null || !exchange){
+				render(contentType: "text/json") { resultCode = "KO"}
+			}
+		}else {
+			exchange = Exchange.findByFirstUser(answeringUser)
+			if(!exchange || exchange == null) {
+				exchange = Exchange.findBySecondUser(answeringUser)
+				if(!exchange || exchange == null) {
+					UserManager.findByUser(answeringUser).available = true;
+					render(contentType: "text/json") { resultCode = "KO" }
+					return null;
+				}else{
+					render(contentType: "text/json") {
+						resultCode = "OK"
+						yourProduct = {
+							name = exchange.firstUser.currentProduct.name
+							descriptif = exchange.firstUser.currentProduct.name
+						}
+						myProduct = {
+							name = exchange.secondUser.currentProduct.name
+							descriptif = exchange.secondUser.currentProduct.name
+						}
 					}
 				}
 			}else {
 				render(contentType: "text/json") {
 					resultCode = "OK"
-					yourProduct = {
+					myProduct = {
 						name = exchange.firstUser.currentProduct.name
 						descriptif = exchange.firstUser.currentProduct.name
 					}
-					myProduct = {
+					yourProduct = {
 						name = exchange.secondUser.currentProduct.name
 						descriptif = exchange.secondUser.currentProduct.name
 					}
 				}
+				return null;
 			}
-		} else {
-		render(contentType: "text/json") {
-					resultCode = "KO"}
 		}
+		
+		render(contentType: "text/json") {
+			resultCode = "OK"
+			myProduct = {
+				name = exchange.firstUser.currentProduct.name
+				descriptif = exchange.firstUser.currentProduct.name
+			}
+			yourProduct = {
+				name = exchange.secondUser.currentProduct.name
+				descriptif = exchange.secondUser.currentProduct.name
+			}
+		}
+		return null;
 
 
-	}
-
-	def testJson = {
-		def statusTmp = "ACCEPTED"
 		def remainingExchangeTmp = 42
 		render(contentType: "text/json") {
 			myProduct = {
@@ -226,5 +229,27 @@ class ExchangeController {
 				descriptif = remainingExchangeTmp
 			}
 		}
+	}
+	
+	
+	def listProducts = {
+		def user = User.get(springSecurityService.authentication.principal.id)
+		def rating = Rating.findAllByUser(user)
+		
+		rating.sort({ e1, e2 ->
+			e2.elo - e1.elo
+		})
+		
+		def products = []
+		rating.each{
+			products << [name: it.product.name, elo: it.elo]
+		}
+
+		def res = [
+			resultCode: 'OK',
+			products: products	
+		]	
+		
+		render res as JSON
 	}
 }
