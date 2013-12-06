@@ -63,6 +63,7 @@ class ExchangeController {
 		User otherUser
 		Exchange exchange
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
+		
 		// Récuperation de l'échange
 		exchange = Exchange.findByFirstUser(answeringUser)
 		if(exchange == null) {
@@ -80,7 +81,7 @@ class ExchangeController {
 			otherUser = exchange.getSecondUser()
 			isUserOne = true
 		}
-
+//exchangeRemaining
 		boolean reponse = params?.reponse
 		if(isUserOne) {
 			exchange.setFirstUserResponse(reponse)
@@ -91,24 +92,18 @@ class ExchangeController {
 
 		if(exchange.firstUserResponse != null && exchange.secondUserResponse != null){
 			if(exchange.firstUserResponse != true && exchange.secondUserResponse != true){
-				//points
-				ratingAlgorithmService.update(exchange)
 				//exchange products
 				Product tmp
-				tmp =answeringUser.currentProduct
+				tmp = answeringUser.currentProduct
 				answeringUser.currentProduct = otherUser.currentProduct
 				otherUser.currentProduct = tmp
-				//save
-				answeringUser.save()
-				otherUser.save()
-			}else{
-				//update points
-				ratingAlgorithmService.update(exchange)
-				//keep same object
-				answeringUser.save()
-				otherUser.save()
 			}
-
+			
+			//update points
+			ratingAlgorithmService.update(exchange)
+			//keep same object
+			answeringUser.save()
+			otherUser.save()
 		}
 
 		render(contentType: "text/json") { resultCode = "OK" }
@@ -140,10 +135,10 @@ class ExchangeController {
     		ratingAlgorithmService.update(exchange)
 
 		if(exchange.firstUserResponse == true && exchange.secondUserResponse == true) {
-			statusTmp = "VALIDATE"
+			statusTmp = "validate"
 		}
 		else {
-			statusTmp = "DENIED"
+			statusTmp = "denied"
 		}
 		remainingExchangeTmp = answeringUser.exchangeRemaining
 		// TODO REMOVE
@@ -234,7 +229,6 @@ class ExchangeController {
 	
 	
 	def listProducts = {
-		
 		def user = User.get(springSecurityService.authentication.principal.id)
 		def rating = Rating.findAllByUser(user)
 		

@@ -19,13 +19,13 @@ class RatingAlgorithmService {
 			
 			if (e.firstUserResponse == true){
 				updateRatings(u1, p1, p2);
-			}else{
+			}else if(e.firstUserResponse == false){
 				downgradeRatings(u1,p2,p1)
 			}
 			
 			if (e.secondUserResponse == true){
 				updateRatings(u2, p2, p1);
-			}else{
+			}else if (e.secondUserResponse == false){
 				downgradeRatings(u2,p1,p2)
 			}
 		}
@@ -35,7 +35,7 @@ class RatingAlgorithmService {
 
 	private def updateRatings(User u, Product given, Product received) {
 		def old  = Rating.findByUserAndProduct(u,given);
-		def winner = Rating.findByUserAndProduct(u,recieved);
+		def winner = Rating.findByUserAndProduct(u,received);
 		
 		float diff = Math.abs(old.elo - winner.elo);
 
