@@ -1,6 +1,6 @@
 package nuitinfo2013
 
-class RatingAlgorithmController {
+class RatingAlgorithmService {
 
 	final static float MUCH_MORE = 50;
 	final static float BIT_MORE = 25;
@@ -10,38 +10,32 @@ class RatingAlgorithmController {
 
 
 	def update(Exchange e) {
-		User u1 = e.firstUser;
-		User u2 = e.secondUser;
-
-		Product p1 = u1.currentProduct;
-		Product p2 = u2.currentProduct;
-		
-		if (e.firstUserResponse == true){
-			updateRatings(u1, p1, p2);
-		}else{
-			downgradeRatings(u1,p2,p1)
+		if (e != null){
+			User u1 = e.firstUser;
+			User u2 = e.secondUser;
+	
+			Product p1 = u1.currentProduct;
+			Product p2 = u2.currentProduct;
+			
+			if (e.firstUserResponse == true){
+				updateRatings(u1, p1, p2);
+			}else{
+				downgradeRatings(u1,p2,p1)
+			}
+			
+			if (e.secondUserResponse == true){
+				updateRatings(u2, p2, p1);
+			}else{
+				downgradeRatings(u2,p1,p2)
+			}
 		}
 		
-		if (e.secondUserResponse == true){
-			updateRatings(u2, p2, p1);
-		}else{
-			downgradeRatings(u2,p1,p2)
-		}
 	}
 
 
 	private def updateRatings(User u, Product given, Product received) {
-		def res = Rating.withCriteria {
-			eq('user', u)
-			eq('product', given)
-		}
-		Rating old = res.get(0);
-		
-		res = Rating.withCriteria {
-			eq('user', u)
-			eq('product', received)
-		}
-		Rating winner = res.get(0);
+		def old  = Rating.findByUserAndProduct(u,given);
+		def winner = Rating.findByUserAndProduct(u,recieved);
 		
 		float diff = Math.abs(old.elo - winner.elo);
 
@@ -65,15 +59,9 @@ class RatingAlgorithmController {
 	}
 
 	private def downgradeRatings(User u, Product refused, Product current) {
-		Rating looser = Rating.withCriteria {
-			eq('user', u)
-			eq('product', refused)
-		}
+		Rating looser = Rating.findByUserAndProduct(u,refused);
 
-		Rating old = Rating.withCriteria {
-			eq('user', u)
-			eq('product', current)
-		}
+		Rating old = Rating.findByUserAndProduct(u,current);
 
 		float diff = Math.abs(old.elo - looser.elo);
 

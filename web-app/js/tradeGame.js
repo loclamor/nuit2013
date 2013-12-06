@@ -13,6 +13,8 @@ var countDownTimeOut;
 var countDown;
 var getNewExchangeTimeOut;
 
+var canClick = false;
+
 
 $(document).ready(function(){
 	$(".clickWrapper").addClass("loading");
@@ -21,10 +23,8 @@ $(document).ready(function(){
 	
 	//click listener on products
 	$("#tradeGame .clickWrapper").click(function(){
-		if( !$(this).hasClass("checked") && !$(this).hasClass("notchecked")
-				&& !$("#myProduct .clickWrapper").hasClass("loading")
-				&& !$("#secondProduct .clickWrapper").hasClass("loading") ) {
-			
+		if( canClick ) {
+			canClick = false;
 			$("#tradeGame .clickWrapper").addClass("notchecked");
 			$(this).removeClass("notchecked")
 			$(this).addClass("checked");
@@ -32,12 +32,13 @@ $(document).ready(function(){
 			var choice = !$(this).parent(".thumbnail").is("#myProduct")
 			
 			//send request
-			$.getJSON("./Exchange/response/?reponse="+choice, function( data ){
+			$.getJSON("./Exchange/reponse/?reponse="+choice, function( data ){
 				if( data.resultCode == "OK" ){
 					
 				}
 				else {
 					console.log("Error on ./Exchange/response/?reponse="+choice);
+					canClick = true;
 				}
 			});
 		}
@@ -84,18 +85,19 @@ function getNewExchange() {
 function refreshGame() {
 	//remove checked / denied
 	$("#secondProduct .clickWrapper").removeClass("loading");
+	$("#myProduct .clickWrapper").removeClass("loading");
 	$("#tradeGame .clickWrapper").removeClass("notchecked");
 	$("#tradeGame .clickWrapper").removeClass("checked");
 	// refresh products content
-	$("#myProduct").html( model.myProduct.name );
-	$("#secondProduct").html( model.yourProduct.name );
+	$("#myProduct span").html( model.myProduct.name );
+	$("#secondProduct span").html( model.yourProduct.name );
 	//refresh remaining exchange
 	$("#exchangeRemaining span").html( model.remainingExchange )
 	
 	//reset countDown
 	$("#exchangeCountDown").html( "10s" );
 	countDown = 10;
-	
+	canClick = true;
 	
 }
 
@@ -110,6 +112,16 @@ function getStateExchange() {
 				// ?
 			}
 			refreshGame();
+			canClick = false;
+			//resultCode loading
+			$("#secondProduct .clickWrapper").addClass("loading");
+			// new exchange
+			getNewExchange();
+		}
+		else {
+			console.log("error on ./Exchange/stateExchange/");
+			refreshGame();
+			canClick = false;
 			//resultCode loading
 			$("#secondProduct .clickWrapper").addClass("loading");
 			// new exchange
