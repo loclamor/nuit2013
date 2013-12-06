@@ -13,7 +13,7 @@
 					</div>
 					<div class="col-xs-3">
 						<a href="#" class="thumbnail" id="myProduct">
-							Produit courant
+							<span>Produit courant</span>
 							<div class="clickWrapper"></div>
 						</a>
 					</div>
@@ -23,7 +23,7 @@
 					</div>
 					<div class="col-xs-3">
 						<a href="#"  class="thumbnail" id="secondProduct">
-							Produit porposé
+							<span>Produit porposé</span>
 							<div class="clickWrapper"></div>
 						</a>
 					</div>
