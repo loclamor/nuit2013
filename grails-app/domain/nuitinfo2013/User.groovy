@@ -4,6 +4,7 @@ class User {
 
     transient springSecurityService
 
+	private int maxLife=5;
     String username
     String password
     String emailAddress
@@ -53,6 +54,9 @@ class User {
     protected void encodePassword() {
         password = springSecurityService.encodePassword(password)
     }
+	
+	def addLife(){
+	}
 }
 
 enum Sexe {
