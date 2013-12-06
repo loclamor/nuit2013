@@ -1,9 +1,12 @@
 package nuitinfo2013
 
+import org.springframework.transaction.annotation.Transactional;
+
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService;
 import groovy.ui.ConsoleTextEditor.UpdateCaretListener;
 
+@Transactional
 class ExchangeController {
 	def ratingAlgorithmService
 	def springSecurityService
@@ -113,13 +116,14 @@ class ExchangeController {
 		boolean isUserOne = false
 		User otherUser
 		Exchange exchange
+		def second = false;
 		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		// Wait end timer
 
 
 		// Récuperation de l'échange
 		String statusTmp
-		int remainingExchangeTmp
+		
 
 		exchange = Exchange.findByFirstUser(answeringUser)
 		if(!exchange || exchange == null) {
@@ -127,7 +131,7 @@ class ExchangeController {
 			if(!exchange || exchange == null) {
 				render(contentType: "text/json") { resultCode = "KO" }
 				return null;
-			}
+			} else second = true;
 		}
 
 		// Send exchange
@@ -135,18 +139,18 @@ class ExchangeController {
 
 		if(exchange.firstUserResponse == true && exchange.secondUserResponse == true) {
 			statusTmp = "validate"
+			answeringUser.exchangeRemaining = answeringUser.exchangeRemaining-1;
+			answeringUser.save(flush:true);
 		}
 		else {
 			statusTmp = "denied"
 		}
-		remainingExchangeTmp = answeringUser.exchangeRemaining
-		// TODO REMOVE
-		exchange.delete()
+		
+		int remainingExchangeTmp = answeringUser.exchangeRemaining
+		if (second) exchange.delete()
 		def um = UserManager.findByUser(answeringUser);
 		um.available = true;
 		um.save(flush:true);
-		answeringUser.exchangeRemaining = answeringUser.exchangeRemaining-1;
-		answeringUser.save(flush:true);
 
 		render(contentType: "text/json") {
 			resultCode = "OK"
@@ -156,14 +160,13 @@ class ExchangeController {
 	}
 
 	def newExchange = {
+		// Récuperation de l'utilisateur
+		boolean isFirstUser = false
+		def answeringUser = User.get(springSecurityService.authentication.principal.id)
 		if (answeringUser.exchangeRemaining<=0){
 			render(contentType: "text/json") { resultCode = "KO"}
 			return null;
 		}
-		// Récuperation de l'utilisateur
-		boolean isFirstUser = false
-		def answeringUser = User.get(springSecurityService.authentication.principal.id)
-
 		Exchange exchange;
 
 		if (UserManager.findByUser(answeringUser).available){
@@ -191,7 +194,9 @@ class ExchangeController {
 							name = exchange.secondUser.currentProduct.name
 							descriptif = exchange.secondUser.currentProduct.name
 						}
+						remainingExchange = answeringUser.exchangeRemaining;
 					}
+					return null;
 				}
 			}else {
 				render(contentType: "text/json") {
@@ -204,6 +209,7 @@ class ExchangeController {
 						name = exchange.secondUser.currentProduct.name
 						descriptif = exchange.secondUser.currentProduct.name
 					}
+					remainingExchange = answeringUser.exchangeRemaining;
 				}
 				return null;
 			}
@@ -219,22 +225,9 @@ class ExchangeController {
 				name = exchange.secondUser.currentProduct.name
 				descriptif = exchange.secondUser.currentProduct.name
 			}
-		}
-		return null;
-
-
-		def remainingExchangeTmp = 42
-		render(contentType: "text/json") {
-			myProduct = {
-				name = statusTmp
-				descriptif = statusTmp
-			}
-			yourProduct = {
-				name = remainingExchangeTmp
-				descriptif = remainingExchangeTmp
-			}
 			remainingExchange = answeringUser.exchangeRemaining;
 		}
+		return null;
 	}
 	
 	

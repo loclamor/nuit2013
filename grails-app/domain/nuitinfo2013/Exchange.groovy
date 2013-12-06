@@ -1,5 +1,7 @@
 package nuitinfo2013
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ju
