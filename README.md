@@ -3,11 +3,13 @@ nuit2013
 
 Repo Officiel de l'équipe [MasterOfDL](http://www.nuitdelinfo.com/nuitinfo/teams:equipe_1_masterofdl_modl:start) pour la [Nuit de L'informatique](http://www.nuitdelinfo.com/) 2013 les 5 et 6 décembre 2013, de 16h36 à 08h04
 
-*************COPYRIGHT***********
+COPYRIGHT
+---------
 
 L'application TradeGame est distribuée sous Licence publique générale GNU 3.0, ou GNU General Public License 3.0. 
 
-*************HOW TO USE IT*************
+HOW TO USE IT
+-------------
 
 IMPORTANT : dans le jeu, le produit a gauche est le votre et le produit de droite est celui-de la personne distante avec qui on interagit. Deux comptes utilisateurs pour pouvoir essayer le système d'échange.
 
@@ -22,7 +24,8 @@ pass : 123123123
 Voir bootStrap pour utilisateurs additionnel ( utiliser deux navigateurs ou une instance anonyme d'un navigateur).
 
 
-*************Environnement de notre projet*************
+Environnement de notre projet
+-----------------------------
 
 Il est important d’exprimer dans quel contexte nous voulons mettre en place cette application. Tout d’abord il ne s’agit pas vraiment d’une application standalone, mais plus qu’une fonctionnalité qui, couplée a un site d’e-commerce standard pourrait tendre vers la création d’une application Y-comerce. 
 
@@ -35,7 +38,8 @@ Il est évident que nous n’avons pas mis en place un site de e-commerce standa
 
 
 
-*************Objectifs de l’application : Trade-Game*************
+Objectifs de l’application : Trade-Game
+---------------------------------------
 
 Nous avons conçu une application qui met en place un jeu d’échange. Il s’agit d’une fonctionnalité complémentaire d’un site marchand normal : de CDiscount à Amazon. L’idée est d’avoir en plus des menus “rubriques” horizontal , un menu latéral où le Trage-Game pourra prendre place. 
 
